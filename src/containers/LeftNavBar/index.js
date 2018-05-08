@@ -21,6 +21,7 @@ class LeftNavBar extends Component {
   }
 
   render() {
+
     return (
       <div className={styles} >
         <Drawer
@@ -45,7 +46,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: {
-      ui   : bindActionCreators(uiActionCreators, dispatch)
+      ui: bindActionCreators(uiActionCreators, dispatch)
     }
   };
 }

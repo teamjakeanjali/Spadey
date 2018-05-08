@@ -2,22 +2,33 @@
 
 @import 'variables';
 @import 'third-party/normalize';
-@import 'fonts/roboto';
+@import 'fonts';
 @import 'typography';
 @import 'links';
 
+html, body{
+  height: 100%;
+  position: relative;
+  overflow-x: hidden;
+}
+
 :global(body) {
 
-	position: relative;
+  background: $lightGrey;
+  color: $white;
+
+  a {
+    color: $lightBlue;
+  }
 
   img {
     max-width: 100%;
   }
 
   p {
-  	color: #333333;
-  	line-height:1.3;
-  	margin-bottom:4px;
+    color: #333333;
+    line-height:1.3;
+    margin-bottom:4px;
   }
 
   ul {
@@ -33,8 +44,8 @@
     border: none;
   }
 
-  .container{
-    width: 1350px;
+  .container {
+    padding: 110px 20px 0 20px;
   }
 
   .error {
@@ -45,10 +56,9 @@
     border-radius: $border-radius;
   }
 
-}
-
-@media (max-width: 1414px) {
-  .container {
-    width: 100% !important;
+  .center {
+    text-align: center;
   }
+
+
 }

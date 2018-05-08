@@ -3,9 +3,8 @@
  */
 
 import React                              from 'react';
-import { TextField as MaterialTextField } from 'material-ui';
 import PropTypes                          from 'prop-types';
-
+import { TextField as MaterialTextField } from 'material-ui';
 
 /* component styles */
 import { styles } from './styles.scss';

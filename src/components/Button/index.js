@@ -3,14 +3,16 @@
  */
 
 import React                    from 'react';
+import PropTypes                from 'prop-types';
 import { FlatButton,
          RaisedButton,
          FloatingActionButton,
          IconButton }           from 'material-ui';
-import PropTypes                from 'prop-types';
 
 /* component styles */
 import { styles } from './styles.scss';
+
+const mainClassName = 'btn';
 
 export default function Button(props) {
   const buttonElem = createButton(props);
@@ -37,7 +39,7 @@ function createButton(props) {
     buttonElem = <FloatingActionButton
                   label={label}
                   onTouchTap={onTouchTap}
-                  className={className}
+                  className={`${mainClassName} ${className}`}
                   icon={icon}
                   disabled={disabled}
                   secondary={true}>
@@ -48,7 +50,7 @@ function createButton(props) {
     buttonElem = <FloatingActionButton
                   label={label}
                   onTouchTap={onTouchTap}
-                  className={className}
+                  className={`${mainClassName} ${className}`}
                   icon={icon}
                   disabled={disabled}
                   secondary={true} />
@@ -57,7 +59,7 @@ function createButton(props) {
     buttonElem= <IconButton
                   label={label}
                   onTouchTap={onTouchTap}
-                  className={className}
+                  className={`${mainClassName} ${className}`}
                   disabled={disabled}
                   icon={icon}>{props.icon}</IconButton>;
 
@@ -65,7 +67,7 @@ function createButton(props) {
     buttonElem = <RaisedButton
                   label={label}
                   onTouchTap={onTouchTap}
-                  className={className}
+                  className={`${mainClassName} ${className}`}
                   icon={icon}
                   disabled={disabled}
                   secondary={true} />
@@ -73,7 +75,7 @@ function createButton(props) {
   } else if(props.raised) {
     buttonElem = <RaisedButton
                   label={label}
-                  className={className}
+                  className={`${mainClassName} ${className}`}
                   onTouchTap={onTouchTap}
                   primary={primary}
                   secondary={secondary}
@@ -81,15 +83,14 @@ function createButton(props) {
   } else if(props.flat) {
     buttonElem = <FlatButton
                   onTouchTap={onTouchTap}
-                  className={className}
+                  className={`${mainClassName} ${className}`}
                   icon={icon}
                   disabled={disabled} />
   } else {
     buttonElem = <FlatButton
                   onTouchTap={onTouchTap}
-                  className={className}
+                  className={`${mainClassName} ${className}`}
                   icon={icon}
-                  label={label}
                   disabled={disabled} />
   }
 
@@ -106,8 +107,8 @@ Button.defaultProps = {
   type      : 'button',
   raised    : false,
   label     : '',
-  className : 'btn',
-  disabled : false,
-  primary : true,
-  secondary: false
+  className : mainClassName,
+  disabled  : false,
+  primary   : true,
+  secondary : false
 }

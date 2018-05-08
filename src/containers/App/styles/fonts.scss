@@ -2,4 +2,9 @@
   Fonts
 */
 
-@import url(//fonts.googleapis.com/css?family=Roboto:400,100,300,500,700,900&subset=latin,cyrillic-ext);
+@font-face {
+  font-family: 'DJB-Digital';
+  src: url('./fonts/DJB-Digital.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

@@ -15,7 +15,7 @@
     }
   ],
   "background_color": "#00BCD4",
-  "theme_color": "#00BCD4",
+  "theme_color": "#00BCD4", //this is the splash screen background color
   "display": "standalone",
   "orientation": "portrait"
 }
