@@ -32,14 +32,14 @@ class Navigation extends Component {
     const { history } = this.props;
 
     switch (route) {
-      case '/record':
-        history.push('/record');
-        break;
-      case '/recordings':
-        history.push('/recordings');
-        break;
-      default:
-        break;
+    case '/record':
+      history.push('/record');
+      break;
+    case '/recordings':
+      history.push('/recordings');
+      break;
+    default:
+      break;
     }
   }
 
