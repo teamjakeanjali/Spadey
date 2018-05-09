@@ -2,6 +2,9 @@ import React, { Component }   from 'react';
 
 import { styles } from './styles.scss';
 
+/* actions */
+import * as uiActionCreators from 'core/actions/actions-ui';
+
 class RecordingsView extends Component {
   constructor(props) {
     super(props);
@@ -15,5 +18,6 @@ class RecordingsView extends Component {
     );
   }
 }
+
 
 export default RecordingsView;
