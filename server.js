@@ -4,9 +4,10 @@ const app = express();
 const isDevMode = process.env.NODE_ENV === 'development';
 const request = require('request');
 var SoxCommand = require('sox-audio');
+const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 var command = SoxCommand();
 const fs = require('fs');
-const speech = require('@google-cloud/speech');
+const speech = require('@google-cloud/speech').v1p1beta1;
 
 app.use(require('morgan')('short'));
 
@@ -32,6 +33,26 @@ app.use(require('morgan')('short'));
 
   app.use(express.static(__dirname + '/'));
 })();
+
+let toneAnalyzer = new ToneAnalyzerV3({
+  version: '2017-09-21',
+  username: process.env.WATSON_USERNAME,
+  password: process.env.WATSON_PASSWORD,
+  url: 'https://gateway-fra.watsonplatform.net/tone-analyzer/api'
+});
+
+const analyzeText = text => {
+  console.log('made it in analyze');
+  let params = {
+    tone_input: { text: text },
+    content_type: 'application/json'
+  };
+
+  toneAnalyzer.tone(params, function(error, response) {
+    if (error) console.log('error:', error);
+    else console.log(JSON.stringify(response, null, 2));
+  });
+};
 
 const convertAudio = inputStream => {
   // use sox to convert blob of .wav files to .flac file
@@ -77,7 +98,7 @@ const convertAudio = inputStream => {
 };
 
 app.post('/audio', function(req, res) {
-  // convertAudio("./assets/test.wav");
+  // convertAudio('./assets/test.wav');
   // function syncRecognize(filename, encoding, sampleRateHertz, languageCode) {
   // [START speech_sync_recognize]
   // Imports the Google Cloud client library
@@ -86,7 +107,7 @@ app.post('/audio', function(req, res) {
   const client = new speech.SpeechClient();
 
   // configuration needed for sync speech recognize
-  const filename = './assets/test.flac';
+  const filename = './assets/test1.flac';
   const encoding = 'FLAC';
   const sampleRateHertz = 44100;
   const languageCode = 'en-US';
@@ -111,23 +132,11 @@ app.post('/audio', function(req, res) {
     .recognize(request)
     .then(data => {
       const response = data[0];
-      response.results.forEach(result => {
-        console.log('Transcription: ', result.alternatives[0].transcript);
-        result.alternatives[0].words.forEach(wordInfo => {
-          // NOTE: If you have a time offset exceeding 2^32 seconds, use the
-          // wordInfo.{x}Time.seconds.high to calculate seconds.
-          const startSecs =
-            `${wordInfo.startTime.seconds}` +
-            '.' +
-            wordInfo.startTime.nanos / 100000000;
-          const endSecs =
-            `${wordInfo.endTime.seconds}` +
-            '.' +
-            wordInfo.endTime.nanos / 100000000;
-          console.log(`Word: ${wordInfo.word}`);
-          console.log(`\t ${startSecs} secs - ${endSecs} secs`);
-        });
-      });
+      const transcription = response.results
+        .map(result => result.alternatives[0].transcript)
+        .join('\n');
+      console.log('Transcription: ', transcription);
+      analyzeText(transcription);
     })
     .catch(err => {
       console.error('ERROR:', err);
