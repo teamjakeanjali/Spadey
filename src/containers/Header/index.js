@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component }   from 'react';
+import { connect }            from 'react-redux';
 import { bindActionCreators } from 'redux';
-import AppBar from 'components/AppBar';
-import Navigation from 'components/Navigation';
+import AppBar                 from 'components/AppBar';
+import Navigation             from 'components/Navigation';
+
 /* actions */
 import * as uiActionCreators from 'core/actions/actions-ui';
 
@@ -14,9 +15,9 @@ class Header extends Component {
     super(props);
   }
 
-  handleToggle = () => {
+  handleToggle=() => {
     this.props.actions.ui.openNav();
-  };
+  }
 
   render() {
     return (

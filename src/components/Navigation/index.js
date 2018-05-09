@@ -8,7 +8,6 @@ import { styles } from './styles.scss';
 class Navigation extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       currentRoute: '/record'
     };
@@ -23,6 +22,7 @@ class Navigation extends Component {
     this.setState({
       currentRoute: route
     });
+
     if (updateURL !== false) {
       this.pushRoute(route);
     }
@@ -32,14 +32,14 @@ class Navigation extends Component {
     const { history } = this.props;
 
     switch (route) {
-    case '/record':
-      history.push('/record');
-      break;
-    case '/recordings':
-      history.push('/recordings');
-      break;
-    default:
-      break;
+      case '/record':
+        history.push('/record');
+        break;
+      case '/recordings':
+        history.push('/recordings');
+        break;
+      default:
+        break;
     }
   }
 
