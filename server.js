@@ -4,10 +4,10 @@ const app = express();
 const isDevMode = process.env.NODE_ENV === 'development';
 const request = require('request');
 var SoxCommand = require('sox-audio');
-const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 var command = SoxCommand();
 const fs = require('fs');
 const speech = require('@google-cloud/speech').v1p1beta1;
+const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 
 app.use(require('morgan')('short'));
 

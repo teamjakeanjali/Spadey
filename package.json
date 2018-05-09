@@ -4,7 +4,8 @@
   "description": "A React/Redux Progressive Mobile Web App boilerplate",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "webpack --progress --verbose --colors --display-error-details --config webpack/common.config.js",
+    "build":
+      "webpack --progress --verbose --colors --display-error-details --config webpack/common.config.js",
     "build:production": "npm run clean && npm run build",
     "lint": "eslint src",
     "start": "cross-env NODE_ENV=development node bin/server.js",
@@ -12,7 +13,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hackingbeauty/base-single-page-app-architecture.git"
+    "url":
+      "https://github.com/hackingbeauty/base-single-page-app-architecture.git"
   },
   "devDependencies": {
     "autoprefixer": "^6.6.1",
