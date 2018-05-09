@@ -83,7 +83,8 @@
     "react-tap-event-plugin": "^3.0.2",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "sox-audio": "^0.3.0"
+    "sox-audio": "^0.3.0",
+    "watson-developer-cloud": "^3.4.1"
   },
   "config": {
     "ghooks": {
