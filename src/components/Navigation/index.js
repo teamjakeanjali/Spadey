@@ -13,6 +13,11 @@ class Navigation extends Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { pathname } = nextProps.location;
+    this.handleChange(pathname, false);
+  }
+
   componentDidMount() {
     const { pathname } = this.props.location;
     this.handleChange(pathname, false);
