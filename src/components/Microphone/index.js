@@ -23,8 +23,8 @@ export default class Microphone extends Component {
           record={record}
           onStop={onStop}
           className="recording-line"
-          strokeColor="#0096ef"
-          backgroundColor="#414141"
+          strokeColor="#3366ff"
+          backgroundColor="black"
         />
       </div>
     );

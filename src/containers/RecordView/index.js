@@ -7,6 +7,7 @@ import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import SaveIcon from 'material-ui/svg-icons/content/save';
 import ReactSimpleTimer from 'react-simple-timer';
 import Microphone from 'components/Microphone';
+import { withRouter } from 'react-router-dom';
 
 import { styles } from './styles.scss';
 
@@ -43,9 +44,10 @@ class RecordView extends Component {
 
   onStop = recording => {
     const { saveRecording } = this.state;
-    const { actions } = this.props;
+    const { actions, history } = this.props;
 
     if (saveRecording) {
+      history.push('/recordings');
       actions.audio.saveRecording(recording);
     }
   };
@@ -111,4 +113,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(RecordView);
+export default withRouter(connect(null, mapDispatchToProps)(RecordView));
