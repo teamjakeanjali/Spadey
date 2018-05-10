@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import EmptyState from 'components/EmptyState';
 import RecordedItem from 'components/RecordedItem';
+import { withRouter } from 'react-router-dom';
 
 import { styles } from './styles.scss';
 
@@ -13,13 +15,30 @@ class RecordingsView extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    const { match, actions } = this.props;
+
+    if (match.path === '/recording/:id') {
+      actions.ui.openRightNav();
+    }
+  }
+
+  goToRecording = recordingId => {
+    const { history, actions } = this.props;
+    history.push(`/recording/${recordingId}`);
+    actions.ui.openRightNav();
+  };
+
   getRecordings() {
     const { list } = this.props.audio;
 
     const recordings = list.map((recordedItem, index) => {
       return (
         <li key={`recording-${index}`}>
-          <RecordedItem item={recordedItem} />
+          <RecordedItem
+            item={recordedItem}
+            onTouchTap={this.goToRecording.bind(null, recordedItem.id)}
+          />
         </li>
       );
     });
@@ -49,4 +68,14 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(RecordingsView);
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: {
+      ui: bindActionCreators(uiActionCreators, dispatch)
+    }
+  };
+}
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(RecordingsView)
+);
