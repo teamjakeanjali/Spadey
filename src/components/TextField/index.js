@@ -2,8 +2,8 @@
  * Text Field - A common Text Field
  */
 
-import React                              from 'react';
-import PropTypes                          from 'prop-types';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { TextField as MaterialTextField } from 'material-ui';
 
 /* component styles */
@@ -19,9 +19,9 @@ export default function TextField(props) {
 
 TextField.propTypes = {
   hintText: PropTypes.string,
-  type    : PropTypes.string
+  type: PropTypes.string
 };
 
 TextField.defaultProps = {
   type: 'text'
-}
+};
