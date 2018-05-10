@@ -1,16 +1,16 @@
-import React, { Component }   from 'react';
-import { connect }            from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withRouter }         from 'react-router-dom';
-import { IconButton }         from 'material-ui';
-import Button                 from 'components/Button';
-import { Drawer  }            from 'material-ui';
-import NavigationBack         from 'material-ui/svg-icons/navigation/arrow-back';
-import PlayButton             from 'material-ui/svg-icons/av/play-arrow';
-import PauseButton            from 'material-ui/svg-icons/av/pause';
+import { withRouter } from 'react-router-dom';
+import { IconButton } from 'material-ui';
+import Button from 'components/Button';
+import { Drawer } from 'material-ui';
+import NavigationBack from 'material-ui/svg-icons/navigation/arrow-back';
+import PlayButton from 'material-ui/svg-icons/av/play-arrow';
+import PauseButton from 'material-ui/svg-icons/av/pause';
 
 /* actions */
-import * as uiActionCreators    from 'core/actions/actions-ui';
+import * as uiActionCreators from 'core/actions/actions-ui';
 import * as audioActionCreators from 'core/actions/actions-audio';
 
 /* component styles */
@@ -20,10 +20,10 @@ class DetailsView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open       : false,
-      audioBlob  : null,
-      isPlaying  : false,
-    }
+      open: false,
+      audioBlob: null,
+      isPlaying: false
+    };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,9 +33,9 @@ class DetailsView extends Component {
     this.findRecordId(list, audioId);
   }
 
-  findRecordId= (list, audioId) => {
-    if(list && list.length){
-      const audioBlob = list.find((item)=> {
+  findRecordId = (list, audioId) => {
+    if (list && list.length) {
+      const audioBlob = list.find(item => {
         return item.id === audioId;
       });
       this.setState({
@@ -46,69 +46,71 @@ class DetailsView extends Component {
         audioBlob: undefined
       });
     }
-  }
+  };
 
   getCurrentId(pathname) {
     return pathname.split('/')[2];
   }
 
-  closeNav= () => {
+  closeNav = () => {
     const { actions, history } = this.props;
     this.setState({
-      open     : false,
+      open: false,
       isPlaying: false
     });
     actions.ui.closeRightNav();
     history.push('/recordings');
-  }
+  };
 
-  playAudio= () => {
+  playAudio = () => {
     this.refs.audioSource.play();
     this.setState({
       isPlaying: true
     });
-  }
+  };
 
-  pauseAudio=() => {
+  pauseAudio = () => {
     this.refs.audioSource.pause();
     this.setState({
       isPlaying: false
     });
-  }
+  };
 
-  onEnded=() => {
+  onEnded = () => {
     this.setState({
       isPlaying: false
     });
-  }
+  };
 
   getContent() {
     const { audioBlob, isPlaying } = this.state;
     let body;
 
-    if(audioBlob) {
+    if (audioBlob) {
       const { title } = this.state.audioBlob;
       const { blob } = this.state.audioBlob;
       const buttonIcon = isPlaying ? <PauseButton /> : <PlayButton />;
       const buttonMode = isPlaying ? this.pauseAudio : this.playAudio;
 
-      body= (<div>
-              <span className="audio-title">{title}</span>
-              <Button
-                className="play"
-                floating={true}
-                icon={buttonIcon}
-                onTouchTap={buttonMode}
-                secondary={true} />
-              <div className="audio-controls">
-                <audio ref="audioSource" controls="controls" onEnded={this.onEnded}>
-                  <source src={URL.createObjectURL(blob)} type="audio/webm" />
-                </audio>
-              </div>
-            </div>);
-
+      body = (
+        <div>
+          <span className="audio-title">{title}</span>
+          <Button
+            className="play"
+            floating={true}
+            icon={buttonIcon}
+            onTouchTap={buttonMode}
+            secondary={true}
+          />
+          <div className="audio-controls">
+            <audio ref="audioSource" controls="controls" onEnded={this.onEnded}>
+              <source src={URL.createObjectURL(blob)} type="audio/webm" />
+            </audio>
+          </div>
+        </div>
+      );
     } else {
-      body=(<div>No recording was found</div>);
+      body = <div>No recording was found</div>;
     }
 
     return (
@@ -118,9 +120,7 @@ class DetailsView extends Component {
             <NavigationBack />
           </IconButton>
         </header>
-        <div className="details-view-body">
-          {body}
-        </div>
+        <div className="details-view-body">{body}</div>
       </div>
     );
   }
@@ -138,9 +138,10 @@ class DetailsView extends Component {
           containerClassName="right-drawer"
           openSecondary={true}
           onRequestChange={this.closeNav}
-          swipeAreaWidth={10} >
+          swipeAreaWidth={10}
+        >
           {content}
-          </Drawer>
+        </Drawer>
       </div>
     );
   }
@@ -148,18 +149,20 @@ class DetailsView extends Component {
 
 function mapStateToProps(state) {
   return {
-    ui    : state.ui,
-    audio : state.audio
+    ui: state.ui,
+    audio: state.audio
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     actions: {
-      ui    : bindActionCreators(uiActionCreators, dispatch),
-      audio : bindActionCreators(audioActionCreators, dispatch)
+      ui: bindActionCreators(uiActionCreators, dispatch),
+      audio: bindActionCreators(audioActionCreators, dispatch)
     }
   };
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(DetailsView));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(DetailsView)
+);

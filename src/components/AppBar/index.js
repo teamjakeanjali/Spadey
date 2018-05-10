@@ -2,7 +2,7 @@
  * AppBar
  */
 
-import React                   from 'react';
+import React from 'react';
 import { AppBar as MuiAppBar } from 'material-ui';
 
 /* component styles */
