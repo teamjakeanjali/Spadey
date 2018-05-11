@@ -8,8 +8,9 @@ import SaveIcon from 'material-ui/svg-icons/content/save';
 import ReactSimpleTimer from 'react-simple-timer';
 import Microphone from 'components/Microphone';
 import { withRouter } from 'react-router-dom';
-
+import axios from 'axios';
 import { styles } from './styles.scss';
+import FormData from 'form-data';
 
 /* actions */
 import * as audioActionCreators from 'core/actions/actions-audio';
@@ -19,8 +20,28 @@ class RecordView extends Component {
     super(props);
     this.state = {
       recording: false,
-      saveRecording: false
+      saveRecording: false,
+      transcription: '',
+      overallTone: '',
+      audio: ''
     };
+  }
+
+  sendAudio(recording) {
+    // let formData = new FormData();
+    // //add recording if needed
+    // formData.append('recording', recording.blob);
+    // fetch('/message/audio', {
+    //   method: 'POST',
+    //   headers: {
+    //     Accept: 'application/json, application/xml, text/plain, text/html, *.*',
+    //     'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+    //   },
+    //   body: formData
+    // });
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/message/audio', true);
+    xhr.send(recording.blob);
   }
 
   startRecording = () => {
@@ -40,6 +61,7 @@ class RecordView extends Component {
       recording: false,
       saveRecording: true
     });
+    // this.sendAudio();
   };
 
   onStop = recording => {
@@ -49,6 +71,7 @@ class RecordView extends Component {
     if (saveRecording) {
       history.push('/recordings');
       actions.audio.saveRecording(recording);
+      this.sendAudio(recording);
     }
   };
 
