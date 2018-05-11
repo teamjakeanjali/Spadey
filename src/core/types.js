@@ -6,5 +6,7 @@ export default keyMirror({
   SAVE_RECORDING: null,
   GET_ALL_RECORDINGS: null,
   OPEN_RIGHT_NAV: null,
-  CLOSE_RIGHT_NAV: null
+  CLOSE_RIGHT_NAV: null,
+  OPEN_TOP_NAV: null,
+  CLOSE_TOP_NAV: null
 });

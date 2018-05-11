@@ -27,3 +27,17 @@ export function closeRightNav() {
     type: constants.CLOSE_RIGHT_NAV
   };
 }
+
+//openTopNav
+export function openTopNav() {
+  return {
+    type: constants.OPEN_TOP_NAV
+  };
+}
+
+//closeTopNav
+export function closeTopNav() {
+  return {
+    type: constants.CLOSE_TOP_NAV
+  };
+}

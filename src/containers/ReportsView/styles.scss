@@ -1,0 +1,93 @@
+@import '../../containers/App/styles/variables';
+
+:local(.styles) {
+  position: relative;
+  z-index: 10000;
+
+  header {
+    position: relative;
+    z-index: 2;
+    height: 50px;
+    text-align: center;
+  }
+
+  h1 {
+    color: white;
+    text-shadow: 2px 2px 4px #000000;
+  }
+
+  // header::after {
+  //   position: absolute;
+  //   z-index: 1;
+  //   top: 25px;
+  //   left: 0px;
+  //   content: '';
+  //   background: black;
+  //   background-position: bottom center;
+  //   background-repeat: repeat-x;
+  //   background-size: 95%;
+  //   height: 185px;
+  //   width: 100%;
+  //   opacity: 0.4;
+  // }
+
+  p {
+    margin: 0, auto;
+    text-align: center;
+    background: black;
+    background-image: url('./background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: white;
+    padding: 10px 10px 60px 34px;
+    height: auto;
+    margin: auto;
+    margin-top: 30px;
+    border-radius: 20px;
+    word-wrap: break-word;
+    box-shadow: inset -12px -8px 40px black;
+    width: 70%;
+    box-shadow: 43x 3px 2px #333;
+  }
+
+  .btn {
+    &.close {
+      position: absolute !important;
+      top: 3px;
+      svg {
+        color: black !important;
+      }
+    }
+  }
+
+  .btn.close {
+    right: 7px;
+  }
+
+  .btn.play {
+    position: absolute;
+    top: 222px;
+    right: 60px;
+    z-index: 10;
+  }
+
+  .details-view-body {
+    padding: 20px;
+  }
+
+  .audio-title {
+    margin-bottom: 20px;
+    display: block;
+    &::first-letter {
+      text-transform: capitalize;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .right-drawer {
+      width: 100% !important;
+    }
+  }
+}
