@@ -4,7 +4,7 @@ const fs = require('fs');
 const speech = require('@google-cloud/speech').v1p1beta1;
 const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 const bodyParser = require('body-parser');
-const SoxCommand = require('sox-audio');
+const sox = require('sox-stream');
 // const buffer = require('buffer/').Buffer;
 
 router.use(bodyParser.json());
@@ -19,35 +19,45 @@ let toneAnalyzer = new ToneAnalyzerV3({
 let readStream;
 
 router.post('/audio', function(req, res) {
-  req.on('readable', function() {
-    console.log('req.read', req.read());
-    readStream = req.read();
+  // req.on('readable', function() {
+  //   console.log('req.read', req.read());
+  //   readStream = req.read();
+  // });
+  console.log(req.req);
+  let src = fs.createReadStream(req);
+  console.log(src);
+  const transcode = sox({
+    output: {
+      bits: 16,
+      rate: 44100,
+      chanels: 1,
+      type: 'flac'
+    }
   });
+  let destination = fs.createWriteStream('song.flac');
+  src.pipe(transcode).pipe(destination);
 
-  // let arrayBuffer = Uint8Array.from(req.body).buffer;
-  // let buffer = Buffer.from(arrayBuffer);
-  // console.log('array', arrayBuffer);
-  // console.log('buffer', buffer);
+  transcode.on('error', err => console.log('err', err));
 
-  var command = SoxCommand(readStream)
-    .outputFileType('flac')
-    .outputSampleRate('44.1k');
+  // var command = SoxCommand(readStream)
+  //   .outputFileType('flac')
+  //   .outputSampleRate('44.1k');
 
-  command.on('start', function(commandLine) {
-    console.log('Spawned sox with command ' + commandLine);
-  });
-  command.on('progress', function(progress) {
-    console.log('Processing progress: ', progress);
-  });
-  command.on('error', function(err, stdout, stderr) {
-    console.log('Cannot process audio: ' + err.message);
-    console.log('Sox Command Stdout: ', stdout);
-    console.log('Sox Command Stderr: ', stderr);
-  });
-  command.on('end', function() {
-    console.log('Sox command succeeded!');
-  });
-  command.run();
+  // command.on('start', function(commandLine) {
+  //   console.log('Spawned sox with command ' + commandLine);
+  // });
+  // command.on('progress', function(progress) {
+  //   console.log('Processing progress: ', progress);
+  // });
+  // command.on('error', function(err, stdout, stderr) {
+  //   console.log('Cannot process audio: ' + err.message);
+  //   console.log('Sox Command Stdout: ', stdout);
+  //   console.log('Sox Command Stderr: ', stderr);
+  // });
+  // command.on('end', function() {
+  //   console.log('Sox command succeeded!');
+  // });
+  // command.run();
   // Creates a client
   const client = new speech.SpeechClient();
 
