@@ -1,15 +1,12 @@
 @import '../../containers/App/styles/variables';
 
 :local(.styles) {
-
   font-size: 10px;
-  cursor: pointer;
 
   .item {
     position: relative;
-    border-bottom:1px solid $lighterGrey;
+    border-bottom: 1px solid $lighterGrey;
     padding: 20px;
-    cursor: pointer;
     display: block;
   }
 
@@ -32,13 +29,32 @@
   .length {
     position: absolute;
     top: 24px;
-    right: 20px;
+    right: 200px;
   }
 
   .size {
     position: absolute;
     bottom: 20px;
+    right: 200px;
+  }
+
+  .report {
+    position: absolute;
+    top: 10px;
+    right: 100px;
+  }
+
+  .report:hover {
+    cursor: pointer;
+  }
+
+  .play {
+    position: absolute;
+    top: 10px;
     right: 20px;
   }
 
+  .play:hover {
+    cursor: pointer;
+  }
 }

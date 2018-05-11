@@ -19,6 +19,7 @@ import LeftNavBar from 'containers/LeftNavBar';
 import RecordView from 'containers/RecordView';
 import RecordingsView from 'containers/RecordingsView';
 import DetailsView from 'containers/DetailsView';
+import ReportsView from 'containers/ReportsView';
 
 injectTapEventPlugin();
 OfflinePluginRuntime.install();
@@ -45,9 +46,11 @@ export class App extends Component {
                   <Route path="/record" component={RecordView} />
                   <Route path="/recordings" component={RecordingsView} />
                   <Route path="/recording/:id" component={RecordingsView} />
+                  <Route path="/reports/:id" component={RecordingsView} />
                   <Redirect from="/" to="/record" />
                 </Switch>
               </div>
+              <ReportsView />
               <DetailsView />
               <LeftNavBar />
             </div>
