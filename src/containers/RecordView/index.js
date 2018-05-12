@@ -11,6 +11,8 @@ import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { styles } from './styles.scss';
 import FormData from 'form-data';
+import io from 'socket.io-client';
+import ss from 'socket.io-stream';
 
 /* actions */
 import * as audioActionCreators from 'core/actions/actions-audio';
@@ -28,18 +30,28 @@ class RecordView extends Component {
   }
 
   sendAudio(recording) {
-    let formData = new FormData();
-    formData.append('recording', recording.blob, 'audio.webm');
-    fetch('/message/audio', {
-      method: 'POST',
-      // headers: {
-      //   Accept: 'application/json, application/xml, text/plain, text/html, *.*',
-      //   'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-      // },
-      body: formData
+    console.log(recording);
+    let socket = io.connect('/audio');
+    let file = recording.blob;
+    let stream = ss.createStream();
+
+    ss(socket).emit('send-audio', stream, {
+      mimetype: file.mimetype,
+      size: file.size
     });
+    ss.createBlobReadStream(file).pipe(stream);
+    // let formData = new FormData();
+    // formData.append('recording', recording.blob, 'audio.webm');
+    // fetch('/message/audio', {
+    //   method: 'POST',
+    //   // headers: {
+    //   //   Accept: 'application/json, application/xml, text/plain, text/html, *.*',
+    //   //   'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+    //   // },
+    //   body: formData
+    // });
     // const xhr = new XMLHttpRequest();
-    // xhr.open('POST', '/message/audio', true);
+    // xhr.open('POST', '/message/audio');
     // xhr.send(recording.blob);
     // console.log(recording);
   }

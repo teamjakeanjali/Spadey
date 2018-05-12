@@ -4,6 +4,9 @@ const app = express();
 const isDevMode = process.env.NODE_ENV === 'development';
 const request = require('request');
 const voiceRoutes = require('./helpers/voiceAnalysis.js');
+const socket = require('socket.io');
+const ss = require('socket.io-stream');
+const fs = require('fs');
 
 app.use(require('morgan')('short'));
 
@@ -37,8 +40,18 @@ app.get(/.*/, function root(req, res) {
 });
 
 const server = http.createServer(app);
+
 server.listen(process.env.PORT || 3000, function onListen() {
   const address = server.address();
   console.log('Listening on: %j', address);
   console.log(' -> that probably means: http://localhost:%d', address.port);
+});
+
+const io = socket(server);
+
+io.of('/audio').on('connection', function(socket) {
+  ss(socket).on('send-audio', function(stream, data) {
+    const fileName = 'assets/audio.webm';
+    stream.pipe(fs.createWriteStream(fileName));
+  });
 });
