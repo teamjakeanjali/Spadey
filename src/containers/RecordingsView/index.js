@@ -20,6 +20,8 @@ class RecordingsView extends Component {
 
     if (match.path === '/recording/:id') {
       actions.ui.openRightNav();
+    } else if (match.path === 'reports/:id') {
+      actions.ui.openTopNav();
     }
   }
 
@@ -27,6 +29,13 @@ class RecordingsView extends Component {
     const { history, actions } = this.props;
     history.push(`/recording/${recordingId}`);
     actions.ui.openRightNav();
+  };
+
+  goToReports = recordingId => {
+    const { history, actions } = this.props;
+    history.push(`/reports/${recordingId}`);
+    actions.ui.openTopNav();
+    console.log('TOP OPEN!');
   };
 
   getRecordings() {
@@ -37,7 +46,8 @@ class RecordingsView extends Component {
         <li key={`recording-${index}`}>
           <RecordedItem
             item={recordedItem}
-            onTouchTap={this.goToRecording.bind(null, recordedItem.id)}
+            goToRecording={this.goToRecording.bind(null, recordedItem.id)}
+            goToReports={this.goToReports.bind(null, recordedItem.id)}
           />
         </li>
       );

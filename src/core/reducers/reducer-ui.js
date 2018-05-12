@@ -2,7 +2,8 @@ import constants from 'core/types';
 
 const initialState = {
   leftNavOpen: false,
-  rightNavOpen: false
+  rightNavOpen: false,
+  topNavOpen: false
 };
 
 export function uiReducer(state = initialState, action) {
@@ -25,6 +26,16 @@ export function uiReducer(state = initialState, action) {
     case constants.CLOSE_RIGHT_NAV:
       return Object.assign({}, state, {
         rightNavOpen: false
+      });
+
+    case constants.OPEN_TOP_NAV:
+      return Object.assign({}, state, {
+        topNavOpen: true
+      });
+
+    case constants.CLOSE_TOP_NAV:
+      return Object.assign({}, state, {
+        topNavOpen: false
       });
 
     default:
