@@ -28,20 +28,20 @@ class RecordView extends Component {
   }
 
   sendAudio(recording) {
-    // let formData = new FormData();
-    // //add recording if needed
-    // formData.append('recording', recording.blob);
-    // fetch('/message/audio', {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json, application/xml, text/plain, text/html, *.*',
-    //     'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-    //   },
-    //   body: formData
-    // });
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/message/audio', true);
-    xhr.send(recording.blob);
+    let formData = new FormData();
+    formData.append('recording', recording.blob, 'audio.webm');
+    fetch('/message/audio', {
+      method: 'POST',
+      // headers: {
+      //   Accept: 'application/json, application/xml, text/plain, text/html, *.*',
+      //   'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+      // },
+      body: formData
+    });
+    // const xhr = new XMLHttpRequest();
+    // xhr.open('POST', '/message/audio', true);
+    // xhr.send(recording.blob);
+    // console.log(recording);
   }
 
   startRecording = () => {
