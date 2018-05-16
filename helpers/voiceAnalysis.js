@@ -35,7 +35,6 @@ const uploadWebmFile = () => {
       let body = response.body;
       fileId = body.data.id;
       directUpload(fileId);
-      console.log(response.body.data);
     }
   }
 
@@ -43,7 +42,6 @@ const uploadWebmFile = () => {
 };
 
 const directUpload = id => {
-  console.log('STEP 2');
   var options = {
     url: `http://api.convertio.co/convert/${id}/audio.webm`,
     method: 'PUT'
@@ -53,7 +51,6 @@ const directUpload = id => {
     if (error) {
       console.log(error);
     } else {
-      console.log(response);
       getFlacFile(id);
     }
   }
@@ -62,19 +59,14 @@ const directUpload = id => {
 };
 
 const getFlacFile = id => {
-  console.log('STEP 3');
   var options = {
     url: `http://api.convertio.co/convert/${id}/status`,
     json: true
   };
 
-  let url;
-
   function callback(error, response) {
     if (!error && response.statusCode == 200) {
-      console.log(response.body);
-      url = response.body.data.output.url;
-      console.log('URL', url);
+      let url = response.body.data.output.url;
       downloadFile(url);
     }
   }
@@ -83,7 +75,6 @@ const getFlacFile = id => {
 };
 
 const downloadFile = link => {
-  console.log('STEP 4');
   download(link)
     .then(data => {
       fs.writeFileSync('./assets/audio.flac', data);
@@ -92,7 +83,6 @@ const downloadFile = link => {
       analyzeSpeech();
     });
 };
-// downloadFile(url);
 
 const analyzeSpeech = () => {
   console.log('step 5');
