@@ -1,36 +1,125 @@
 const fs = require('fs');
 const speech = require('@google-cloud/speech').v1p1beta1;
 const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
+const request = require('request');
+const download = require('download');
+require('dotenv').config();
 
 // sets up tone analyzer credentials
 let toneAnalyzer = new ToneAnalyzerV3({
-  username: '1813adc9-1239-402c-9adb-7c5bfdb95664',
-  password: 'pOt86kbRyD6A',
+  username: process.env.TONEANALYZER_USERNAME,
+  password: process.env.TONEANALYZER_PASSWORD,
   version: '2017-09-21'
 });
 
-const speechAnalysis = () => {
-  // Creates a client
+const uploadWebmFile = () => {
+  console.log('STEP 1');
+  const dataString = {
+    apikey: process.env.CONVERTIO_API_KEY,
+    input: 'upload',
+    filename: './assets/audio.webm',
+    outputformat: 'flac'
+  };
+
+  var options = {
+    url: 'http://api.convertio.co/convert',
+    method: 'POST',
+    body: dataString,
+    json: true
+  };
+
+  let fileId;
+
+  function callback(error, response) {
+    if (!error && response.statusCode == 200) {
+      let body = response.body;
+      fileId = body.data.id;
+      directUpload(fileId);
+      console.log(response.body.data);
+    }
+  }
+
+  request(options, callback);
+};
+
+const directUpload = id => {
+  console.log('STEP 2');
+  var options = {
+    url: `http://api.convertio.co/convert/${id}/audio.webm`,
+    method: 'PUT'
+  };
+
+  function callback(error, response) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log(response);
+      getFlacFile(id);
+    }
+  }
+
+  fs.createReadStream('./assets/audio.webm').pipe(request(options, callback));
+};
+
+const getFlacFile = id => {
+  console.log('STEP 3');
+  var options = {
+    url: `http://api.convertio.co/convert/${id}/status`,
+    json: true
+  };
+
+  let url;
+
+  function callback(error, response) {
+    if (!error && response.statusCode == 200) {
+      console.log(response.body);
+      url = response.body.data.output.url;
+      console.log('URL', url);
+      downloadFile(url);
+    }
+  }
+
+  request(options, callback);
+};
+
+const downloadFile = link => {
+  console.log('STEP 4');
+  download(link)
+    .then(data => {
+      fs.writeFileSync('./assets/audio.flac', data);
+    })
+    .then(() => {
+      analyzeSpeech();
+    });
+};
+// downloadFile(url);
+
+const analyzeSpeech = () => {
+  console.log('step 5');
   const client = new speech.SpeechClient();
   // configuration needed for sync speech recognize
-  const filename = './assets/output.flac';
   const encoding = 'FLAC';
-  const sampleRateHertz = 44100;
+  const sampleRateHertz = 48000;
+  const filename = './assets/audio.flac';
   const languageCode = 'en-US';
+
   const config = {
     encoding: encoding,
     sampleRateHertz: sampleRateHertz,
     languageCode: languageCode,
     enableAutomaticPunctuation: true
   };
+
   const audio = {
     content: fs.readFileSync(filename).toString('base64')
   };
+
   const speechRequest = {
     config: config,
     audio: audio
   };
-  // Detects speech in the audio file
+
+  // // Detects speech in the audio file
   client
     .recognize(speechRequest)
     .then(data => {
@@ -56,12 +145,12 @@ const speechAnalysis = () => {
       //       //   analysis: JSON.stringify(response)
       //       // });
       //     }
-      //   });
+      // });
     })
     .catch(err => {
       console.error('ERROR:', err);
     });
 };
+module.exports.uploadWebmFile = uploadWebmFile;
 
-// module.exports = convertToFlac;
-// module.exports = speechAnalysis;
+// getFlacFile('c530ab476c561e63b4825594c0f66002');
