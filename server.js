@@ -1,11 +1,67 @@
 const http = require('http');
 const express = require('express');
+const authRoutes = require('./routes/auth-routes');
+const passportSetup = require('./config/passport-setup');
+const path = require('path');
+const pg = require('pg');
+const session = require('express-session');
+const passport = require('passport');
+const db = require('./database-pg');
+const bodyParser = require('body-parser');
+
 const app = express();
 const isDevMode = process.env.NODE_ENV === 'development';
 const voiceAnalysis = require('./helpers/voiceAnalysis.js');
 const socket = require('socket.io');
 const ss = require('socket.io-stream');
 const fs = require('fs');
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(
+  session({
+    secret: process.env.SESSION,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000
+    }
+  })
+);
+
+app.get('/presist', (req, res) => {
+  console.log(req.user);
+  res.send(req.user);
+});
+
+app.use('/', function(req, res, next) {
+  if (req.isAuthenticated()) {
+    // returns true if a user already logged in.
+  }
+  next();
+});
+
+// const isLoggedIn = (req, res, next) => {
+//   if (!req.user) {
+//     console.log('is this happneing?');
+//     res.redirect('/');
+//   } else {
+//     next();
+//   }
+// };
+
+// app.get('/', isLoggedIn, (req, res) => {
+//   console.log('=======');
+//   // res.render('/src/index.html');
+// });
+
+//set up routes
+app.use('/auth', authRoutes);
 
 app.use(require('morgan')('short'));
 
@@ -32,8 +88,9 @@ app.use(require('morgan')('short'));
   app.use(express.static(__dirname + '/'));
 })();
 
-app.get(/.*/, function root(req, res) {
-  res.sendFile(__dirname + '/src/index.html');
+app.use('/', express.static(path.join(__dirname, '/src/index.html')));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/src/index.html'));
 });
 
 const server = http.createServer(app);

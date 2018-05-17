@@ -7,3 +7,4 @@ npm-debug.log
 assets/test.flac
 assets/googleServerAuth.json
 assets
+config/keys.js

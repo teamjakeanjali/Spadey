@@ -13,7 +13,6 @@ import Button from 'components/Button';
 import { styles } from './styles.scss';
 
 export default function RecordedItem(props) {
-  console.log(props);
   const { goToReports, goToRecording } = props;
   const { title, blob, startTime, stopTime } = props.item;
   const createdAt = moment(startTime).format('MMMM DD YYYY, h:mm a');
