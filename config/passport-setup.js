@@ -49,7 +49,6 @@ passport.use(
   'local-login',
   new LocalStrategy((usernameOrEmail, password, done) => {
     const Op = Sequelize.Op;
-    console.log(Op);
     User.findOne({
       where: {
         [Op.or]: [{ username: usernameOrEmail }, { email: usernameOrEmail }]

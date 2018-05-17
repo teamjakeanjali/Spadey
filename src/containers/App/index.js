@@ -35,16 +35,21 @@ export class App extends Component {
     this.state = {
       isLoggedIn: false,
       username: '',
-      email: ''
+      email: '',
+      user_id: ''
     };
   }
 
   componentDidMount() {
     axios
-      .get('/presist')
+      .get('/session')
       .then(res => {
         console.log(res.data);
-        // this.handleAuth(res.config.data);
+        if (res.data.id) {
+          this.setState({
+            isLoggedIn: true
+          });
+        }
       })
       .catch(err => {
         console.log(err);

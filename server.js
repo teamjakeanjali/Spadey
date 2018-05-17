@@ -34,9 +34,10 @@ app.use(
   })
 );
 
-app.get('/presist', (req, res) => {
-  console.log(req.user);
-  res.send(req.user);
+app.get('/session', (req, res) => {
+  console.log('======', req.session.passport.user);
+  let user = req.session.passport.user;
+  res.send(user);
 });
 
 app.use('/', function(req, res, next) {
