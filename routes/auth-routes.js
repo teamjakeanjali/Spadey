@@ -13,7 +13,6 @@ router.post('/login', passport.authenticate('local-login'), (req, res) => {
 
 // auth register
 router.post('/register', (req, res) => {
-  console.log(req);
   createUser(req.body)
     .then(user => {
       req.login(user, err => {
