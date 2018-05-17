@@ -1,5 +1,39 @@
 const bcrypt = require('bcrypt');
-const { User } = require('./index');
+const { User, Message } = require('./index');
+
+const getMessageInfo = (userId, recordingId) => {
+  return new Promise((resolve, reject) => {
+    Message.findOne({
+      where: {
+        userId: userId,
+        recordingId: recordingId
+      }
+    })
+      .then(message => {
+        resolve(message);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+};
+
+const insertMessageInfo = (transcription, sentiment, recordingId, userId) => {
+  return new Promise((resolve, reject) => {
+    Message.create({
+      message: transcription,
+      sentiment: sentiment,
+      recordingId: recordingId,
+      userId: userId
+    })
+      .then(message => {
+        resolve(message);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+};
 
 const hashPassword = password => {
   return new Promise((resolve, reject) => {
@@ -84,5 +118,7 @@ const createUser = userInfo => {
 module.exports = {
   findUserById,
   findOrCreateUserByGoogleId,
-  createUser
+  createUser,
+  insertMessageInfo,
+  getMessageInfo
 };

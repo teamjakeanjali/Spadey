@@ -3,17 +3,19 @@ const speech = require('@google-cloud/speech').v1p1beta1;
 const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 const request = require('request');
 const download = require('download');
+const { insertMessageInfo } = require('../database-pg/helper');
 require('dotenv').config();
 
-// sets up tone analyzer credentials
-let toneAnalyzer = new ToneAnalyzerV3({
-  username: process.env.TONEANALYZER_USERNAME,
-  password: process.env.TONEANALYZER_PASSWORD,
-  version: '2017-09-21'
-});
+let globalUserId;
+let globalRecordingId;
 
-const uploadWebmFile = () => {
-  console.log('STEP 1');
+const uploadWebmFile = (userId, recordingId) => {
+  if (userId && recordingId) {
+    console.log(userId, recordingId);
+    globalUserId = userId;
+    globalRecordingId = recordingId;
+  }
+
   const dataString = {
     apikey: process.env.CONVERTIO_API_KEY,
     input: 'upload',
@@ -28,12 +30,13 @@ const uploadWebmFile = () => {
     json: true
   };
 
-  let fileId;
-
   function callback(error, response) {
-    if (!error && response.statusCode == 200) {
+    console.log(response.body);
+    if (error) {
+      console.log(error);
+    } else {
       let body = response.body;
-      fileId = body.data.id;
+      let fileId = body.data.id;
       directUpload(fileId);
     }
   }
@@ -50,11 +53,9 @@ const directUpload = id => {
   function callback(error, response) {
     if (error) {
       console.log(error);
-    } else {
-      getFlacFile(id);
     }
+    getFlacFile(id);
   }
-
   fs.createReadStream('./assets/audio.webm').pipe(request(options, callback));
 };
 
@@ -65,14 +66,29 @@ const getFlacFile = id => {
   };
 
   function callback(error, response) {
-    if (!error && response.statusCode == 200) {
-      let url = response.body.data.output.url;
-      downloadFile(url);
+    if (error) {
+      console.log(error);
+    } else {
+      if (response.body.data.step === 'finish') {
+        let url = response.body.data.output.url;
+        downloadFile(url);
+      } else {
+        setTimeout(() => {
+          getFlacFile(id);
+        }, 5000);
+      }
     }
   }
 
   request(options, callback);
 };
+
+// sets up tone analyzer credentials
+let toneAnalyzer = new ToneAnalyzerV3({
+  username: process.env.TONEANALYZER_USERNAME,
+  password: process.env.TONEANALYZER_PASSWORD,
+  version: '2017-09-21'
+});
 
 const downloadFile = link => {
   download(link)
@@ -85,7 +101,6 @@ const downloadFile = link => {
 };
 
 const analyzeSpeech = () => {
-  console.log('step 5');
   const client = new speech.SpeechClient();
   // configuration needed for sync speech recognize
   const encoding = 'FLAC';
@@ -114,10 +129,9 @@ const analyzeSpeech = () => {
     .recognize(speechRequest)
     .then(data => {
       const response = data[0];
-      const transcription = response.results
+      return response.results
         .map(result => result.alternatives[0].transcript)
         .join('\n');
-      console.log('TRANSCRIPTION', transcription);
     })
     .then(transcription => {
       //Set up tone analyzer params
@@ -126,21 +140,26 @@ const analyzeSpeech = () => {
         content_type: 'application/json'
       };
       // Do tone analysis
-      //   toneAnalyzer.tone(params, function(error, response) {
-      //     if (error) {
-      //       console.log('error:', error);
-      //     } else {
-      //       // res.status(201).send({
-      //       //   transcription: transcription,
-      //       //   analysis: JSON.stringify(response)
-      //       // });
-      //     }
-      // });
+      toneAnalyzer.tone(params, function(error, response) {
+        if (error) {
+          console.log('error:', error);
+        } else {
+          insertMessageInfo(
+            transcription,
+            JSON.stringify(response),
+            globalRecordingId,
+            globalUserId
+          );
+          console.log('TRANSCRIPT', transcription);
+          console.log('SENTIMENT', JSON.stringify(response));
+          console.log('userid', globalUserId);
+          console.log('recordingId', globalRecordingId);
+        }
+      });
     })
     .catch(err => {
       console.error('ERROR:', err);
     });
 };
-module.exports.uploadWebmFile = uploadWebmFile;
 
-// getFlacFile('c530ab476c561e63b4825594c0f66002');
+module.exports.uploadWebmFile = uploadWebmFile;

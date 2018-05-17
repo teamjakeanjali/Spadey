@@ -50,6 +50,9 @@ const Message = sequelize.define('message', {
   },
   sentiment: {
     type: Sequelize.STRING
+  },
+  recordingId: {
+    type: Sequelize.STRING
   }
 });
 

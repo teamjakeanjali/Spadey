@@ -10,7 +10,6 @@ const { createUser } = require('../database-pg/helper');
 
 router.post('/login', passport.authenticate('local-login'), (req, res) => {
   res.redirect('/record');
-  console.log('is login getting redirect?');
 });
 
 // auth register
