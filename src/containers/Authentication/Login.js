@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 // modules
 // import { Form } from 'semantic-ui-react';
 import axios from 'axios';
+import { styles } from './styles.scss';
 
 // components
 
@@ -41,42 +42,45 @@ class Login extends Component {
 
   render() {
     return (
-      <form className="login">
-        <div className="row uniform">
-          <div className="6u signup-email">
-            <input
-              type="text"
-              placeholder="Username"
-              value={this.state.username}
-              onChange={this.handleChangeUsername}
-            />
-          </div>
-          <div className="6u signup-pw">
-            <input
-              type="password"
-              placeholder="Password"
-              value={this.state.password}
-              onChange={this.handleChangePassword}
-            />
-          </div>
-          <div className="submit-button">
-            <a
-              className="big button special"
-              content="Submit"
-              onClick={this.handleSubmit}
-              href="/#/record"
-            >
-              Login
-            </a>
-            <div>
-              <a className="google-btn" href="/auth/google">
-                Google+
-              </a>
-            </div>
-            <div>
-              <a className="subtle-link">Sign up instead</a>
-            </div>
-          </div>
+      <form className="login-form">
+        <p className="login-text">
+          <span className="fa-stack fa-lg">
+            <i className="fa fa-circle fa-stack-2x" />
+            <i className="fa fa-lock fa-stack-1x" />
+          </span>
+        </p>
+        <input
+          className="login-username"
+          autofocus="true"
+          required="true"
+          type="text"
+          placeholder="Username"
+          value={this.state.username}
+          onChange={this.handleChangeUsername}
+        />
+        <input
+          type="password"
+          className="login-password"
+          required="true"
+          placeholder="Password"
+          value={this.state.password}
+          onChange={this.handleChangePassword}
+        />
+        <div>
+          <a
+            className="subtle-link"
+            content="Submit"
+            onClick={this.handleSubmit}
+            href="/#/record"
+          >
+            Login
+          </a>
+          <a className="subtle-link">Sign up</a>
+        </div>
+        <div>
+          <a className="google-btn" href="/auth/google">
+            Google+
+          </a>
         </div>
       </form>
     );
