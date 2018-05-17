@@ -35,7 +35,6 @@ app.use(
 );
 
 app.get('/session', (req, res) => {
-  console.log('======', req.session.passport.user);
   let user = req.session.passport.user;
   res.send(user);
 });

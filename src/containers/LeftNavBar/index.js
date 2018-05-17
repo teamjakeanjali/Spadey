@@ -27,6 +27,9 @@ class LeftNavBar extends Component {
           onRequestChange={this.closeNav}
         >
           <AppBar title="" />
+          <a href="/auth/logout">
+            <span />Logout
+          </a>
           <Divider />
         </Drawer>
       </div>
