@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 // modules
 import axios from 'axios';
+import { styles } from './styles.scss';
 
 class Register extends Component {
   constructor(props) {
@@ -45,48 +46,52 @@ class Register extends Component {
 
   render() {
     return (
-      <form className="login" onSubmit={this.handleSubmit}>
-        <div className="row uniform">
-          <div className="6u">
-            <input
-              type="text"
-              placeholder="Username"
-              name="username"
-              value={this.state.username}
-              onChange={this.handleChangeUsername}
-            />
-          </div>
-          <div className="6u signup-email">
-            <input
-              type="email"
-              placeholder="Email@email.com"
-              name="email"
-              value={this.state.email}
-              onChange={this.handleChangeEmail}
-            />
-          </div>
-          <div className="6u signup-pw">
-            <input
-              type="password"
-              placeholder="Password"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleChangePassword}
-            />
-          </div>
-          <div className="submit-button">
-            <a
-              className="big button special"
-              content="Submit"
-              onClick={this.handleSubmit}
-              href="/#/record"
-            >
-              Sign Up
-            </a>
-            <div>
-              <a className="subtle-link">Login instead</a>
-            </div>
-          </div>
+      <form className="login-form">
+        <p className="login-text">
+          <span className="fa-stack fa-lg">
+            <i className="fa fa-circle fa-stack-2x" />
+            <i className="fa fa-lock fa-stack-1x" />
+          </span>
+        </p>
+        <input
+          className="login-username"
+          autofocus="true"
+          required="true"
+          type="text"
+          placeholder="Username"
+          name="username"
+          value={this.state.username}
+          onChange={this.handleChangeUsername}
+        />
+        <input
+          type="email"
+          className="login-username"
+          autofocus="true"
+          required="true"
+          placeholder="Email"
+          name="email"
+          value={this.state.email}
+          onChange={this.handleChangeEmail}
+        />
+        <input
+          type="password"
+          className="login-password"
+          required="true"
+          placeholder="Password"
+          name="password"
+          value={this.state.password}
+          onChange={this.handleChangePassword}
+        />
+        <div className="submit-button">
+          <a
+            className="subtle-link"
+            content="Submit"
+            onClick={this.handleSubmit}
+            href="/#/record"
+          >
+            Register
+          </a>
+          <a className="subtle-link">Already have account...? Login</a>
         </div>
       </form>
     );
