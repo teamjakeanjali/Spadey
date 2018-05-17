@@ -6,7 +6,7 @@ const path = require('path');
 const pg = require('pg');
 const session = require('express-session');
 const passport = require('passport');
-const db = require('./database-pg');
+const { getMessageInfo } = require('./database-pg/helper');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -15,6 +15,7 @@ const voiceAnalysis = require('./helpers/voiceAnalysis.js');
 const socket = require('socket.io');
 const ss = require('socket.io-stream');
 const fs = require('fs');
+var globalUserId;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -36,6 +37,9 @@ app.use(
 
 app.get('/session', (req, res) => {
   let user = req.session.passport.user;
+  if (user) {
+    globalUserId = req.session.passport.user.id;
+  }
   res.send(user);
 });
 
@@ -89,6 +93,18 @@ app.use(require('morgan')('short'));
 })();
 
 app.use('/', express.static(path.join(__dirname, '/src/index.html')));
+
+app.get('/messageinfo', async (req, res) => {
+  let userId = req.body.userId;
+  let recordingId = req.body.recordingId;
+
+  let message = await getMessageInfo(userId, recordingId);
+  res.send({
+    transcription: message.dataValues.message,
+    sentiment: message.dataValues.sentiment
+  });
+});
+
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '/src/index.html'));
 });
@@ -105,16 +121,9 @@ const io = socket(server);
 
 io.of('/audio').on('connection', function(socket) {
   ss(socket).on('send-audio', async (stream, data) => {
+    let recordingId = data.recordingId;
     const fileName = 'assets/audio.webm';
     await stream.pipe(fs.createWriteStream(fileName));
-    await voiceAnalysis.uploadWebmFile();
+    await voiceAnalysis.uploadWebmFile(globalUserId, recordingId);
   });
 });
-
-// downloadFile(
-//   'https://margo.convertio.me/p/ZiHMbG7K4ZWtWJzN8vSTPg/53083a86c10baf8ceee6e2054873c806/audio_3.flac'
-// );
-// uploadWebmFile();
-// directUpload();
-// getFlacFile('54e3c22cfd7d400c95467e0b00b338c9');
-// analyzeSpeech();

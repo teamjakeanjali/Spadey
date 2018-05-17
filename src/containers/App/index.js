@@ -43,6 +43,7 @@ export class App extends Component {
     axios
       .get('/session')
       .then(res => {
+        //THIS IS THE ENTIRE USER
         console.log(res.data);
         if (res.data.id) {
           this.setState({
