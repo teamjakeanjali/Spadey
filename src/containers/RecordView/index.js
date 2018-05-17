@@ -25,8 +25,26 @@ class RecordView extends Component {
       saveRecording: false,
       transcription: '',
       overallTone: '',
-      audio: ''
+      audio: '',
+      user_id: ''
     };
+  }
+
+  componentDidMount() {
+    axios
+      .get('/session')
+      .then(res => {
+        console.log('this is the recordView', res.data);
+        if (res.data.id) {
+          this.setState({
+            user_id: res.data.id
+          });
+        }
+        console.log('@@@@@@', this.state.user_id);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   sendAudio(recording) {

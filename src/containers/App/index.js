@@ -35,8 +35,7 @@ export class App extends Component {
     this.state = {
       isLoggedIn: false,
       username: '',
-      email: '',
-      user_id: ''
+      email: ''
     };
   }
 
@@ -70,12 +69,6 @@ export class App extends Component {
     }
   };
 
-  // handleGoogleAuth = () => {
-  //   this.setState({
-  //     isLoggedIn: true
-  //   });
-  // };
-
   render() {
     if (this.state.isLoggedIn) {
       return (
@@ -106,10 +99,7 @@ export class App extends Component {
     } else {
       return (
         <div>
-          <Auth
-            handleAuth={this.handleAuth}
-            // handleGoogleAuth={this.handleGoogleAuth}
-          />
+          <Auth handleAuth={this.handleAuth} />
         </div>
       );
     }

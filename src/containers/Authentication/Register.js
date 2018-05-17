@@ -79,6 +79,7 @@ class Register extends Component {
               className="big button special"
               content="Submit"
               onClick={this.handleSubmit}
+              href="/#/record"
             >
               Sign Up
             </a>

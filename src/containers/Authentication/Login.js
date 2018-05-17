@@ -32,17 +32,12 @@ class Login extends Component {
         password: self.state.password
       })
       .then(res => {
-        console.log(res);
         this.props.handleAuth(res.config.data);
       })
       .catch(err => console.log(err));
 
     this.setState({ username: '', password: '' });
   };
-
-  // handleGoogleSubmit = () => {
-  //   this.props.handleGoogleAuth();
-  // };
 
   render() {
     return (
@@ -69,15 +64,12 @@ class Login extends Component {
               className="big button special"
               content="Submit"
               onClick={this.handleSubmit}
+              href="/#/record"
             >
               Login
             </a>
             <div>
-              <a
-                className="google-btn"
-                href="/auth/google"
-                // onClick={this.handleGoogleSubmit}
-              >
+              <a className="google-btn" href="/auth/google">
                 Google+
               </a>
             </div>

@@ -3,12 +3,14 @@ const passport = require('passport');
 const { createUser } = require('../database-pg/helper');
 
 // auth login
-// router.get('/login', (req, res) => {
-//   res.redirect('Login');
+// router.get('/login', passport.authenticate('local'), (req, res) => {
+//   console.log('login redirect getting fire???');
+//   res.redirect('/');
 // });
 
 router.post('/login', passport.authenticate('local-login'), (req, res) => {
-  res.send(req.user);
+  res.redirect('/record');
+  console.log('is login getting redirect?');
 });
 
 // auth register
@@ -31,8 +33,9 @@ router.post('/register', (req, res) => {
 
 // auth logout
 router.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/');
+  req.session.destroy(err => {
+    res.redirect('/');
+  });
 });
 
 // auth with google
