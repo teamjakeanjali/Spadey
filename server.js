@@ -8,13 +8,13 @@ const session = require('express-session');
 const passport = require('passport');
 const { getMessageInfo } = require('./database-pg/helper');
 const bodyParser = require('body-parser');
-
 const app = express();
 const isDevMode = process.env.NODE_ENV === 'development';
 const voiceAnalysis = require('./helpers/voiceAnalysis.js');
 const socket = require('socket.io');
 const ss = require('socket.io-stream');
 const fs = require('fs');
+
 var globalUserId;
 
 app.use(bodyParser.json());
@@ -95,16 +95,14 @@ app.use(require('morgan')('short'));
 app.use('/', express.static(path.join(__dirname, '/src/index.html')));
 
 app.post('/messageinfo', async (req, res) => {
-  console.log('hit the route');
-  console.log('REQ', req.body);
   let userId = req.body.userId;
   let recordingId = req.body.recordingId;
 
   let message = await getMessageInfo(userId, recordingId);
-  console.log(message);
+
   res.send({
-    transcription: message.dataValues.message,
-    sentiment: message.dataValues.sentiment
+    Sentiment: message.dataValues.sentiment,
+    Transcription: message.dataValues.message
   });
 });
 
