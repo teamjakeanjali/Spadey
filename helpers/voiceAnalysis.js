@@ -4,10 +4,16 @@ const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 const request = require('request');
 const download = require('download');
 const { insertMessageInfo } = require('../database-pg/helper');
+const AWS = require('aws-sdk');
 require('dotenv').config();
 
 let globalUserId;
 let globalRecordingId;
+
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY
+});
 
 const uploadWebmFile = (userId, recordingId) => {
   if (userId && recordingId) {
@@ -83,11 +89,22 @@ const getFlacFile = id => {
   request(options, callback);
 };
 
-// sets up tone analyzer credentials
-let toneAnalyzer = new ToneAnalyzerV3({
-  username: process.env.TONEANALYZER_USERNAME,
-  password: process.env.TONEANALYZER_PASSWORD,
-  version: '2017-09-21'
+const s3 = new AWS.S3();
+
+const params = {
+  Bucket: process.env.AWS_BUCKET_NAME,
+  Body: fs.createReadStream('./assets/audio.webm'),
+  Key: '1234'
+};
+
+s3.upload(params, (err, data) => {
+  if (err) {
+    console.log('ERR', err);
+  }
+
+  if (data) {
+    console.log('Uploaded in:', data.Location);
+  }
 });
 
 const downloadFile = link => {
@@ -99,6 +116,12 @@ const downloadFile = link => {
       analyzeSpeech();
     });
 };
+// sets up tone analyzer credentials
+let toneAnalyzer = new ToneAnalyzerV3({
+  username: process.env.TONEANALYZER_USERNAME,
+  password: process.env.TONEANALYZER_PASSWORD,
+  version: '2017-09-21'
+});
 
 const analyzeSpeech = () => {
   const client = new speech.SpeechClient();
