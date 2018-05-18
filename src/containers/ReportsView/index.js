@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 import {
   IconButton,
   Drawer,
@@ -30,7 +31,9 @@ class ReportsView extends Component {
     this.state = {
       open: false,
       audioBlob: null,
-      isPlaying: false
+      isPlaying: false,
+      sentiment: '',
+      message: ''
     };
   }
 
@@ -62,40 +65,16 @@ class ReportsView extends Component {
 
   closeNav = () => {
     const { actions, history } = this.props;
-    // this.setState({
-    //   open: false,
-    //   isPlaying: false
-    // });
     actions.ui.closeTopNav();
     history.push('/recordings');
   };
-
-  // playAudio = () => {
-  //   this.refs.audioSource.play();
-  //   this.setState({
-  //     isPlaying: true
-  //   });
-  // };
-
-  // pauseAudio = () => {
-  //   this.refs.audioSource.pause();
-  //   this.setState({
-  //     isPlaying: false
-  //   });
-  // };
-
-  // onEnded = () => {
-  //   this.setState({
-  //     isPlaying: false
-  //   });
-  // };
 
   getContent() {
     const { audioBlob, isPlaying } = this.state;
     let body, text;
 
     if (audioBlob) {
-      text = <text>Audio Text goes here....</text>;
+      text = <text>{this.state.message}</text>;
       body = (
         <div>
           <br />

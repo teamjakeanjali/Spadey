@@ -65,6 +65,11 @@ class Login extends Component {
           placeholder="Password"
           value={this.state.password}
           onChange={this.handleChangePassword}
+          onKeyUp={input => {
+            if (input.keyCode === 13) {
+              this.handleSubmit();
+            }
+          }}
         />
         <div>
           <a

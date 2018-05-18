@@ -7,6 +7,7 @@ const pg = require('pg');
 const session = require('express-session');
 const passport = require('passport');
 const { getMessageInfo } = require('./database-pg/helper');
+const { Message } = require('./database-pg/index');
 const bodyParser = require('body-parser');
 const app = express();
 const isDevMode = process.env.NODE_ENV === 'development';
@@ -95,6 +96,18 @@ app.use(require('morgan')('short'));
 app.use('/', express.static(path.join(__dirname, '/src/index.html')));
 
 app.post('/messageinfo', async (req, res) => {
+  let userId = req.body.userId;
+  let recordingId = req.body.recordingId;
+
+  let message = await getMessageInfo(userId, recordingId);
+
+  res.send({
+    Sentiment: message.dataValues.sentiment,
+    Transcription: message.dataValues.message
+  });
+});
+
+app.get('/messageinfo', async (req, res) => {
   let userId = req.body.userId;
   let recordingId = req.body.recordingId;
 
