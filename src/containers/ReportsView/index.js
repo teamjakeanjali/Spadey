@@ -95,7 +95,7 @@ class ReportsView extends Component {
     let body, text;
 
     if (audioBlob) {
-      text = <p>Audio Text goes here....</p>;
+      text = <text>Audio Text goes here....</text>;
       body = (
         <div>
           <br />
@@ -149,7 +149,7 @@ class ReportsView extends Component {
             <NavigationBack />
           </IconButton>
         </header>
-        {text}
+        <div className="text">{text}</div>
         <div className="details-view-body">{body}</div>
       </div>
     );
@@ -166,7 +166,6 @@ class ReportsView extends Component {
           width={1000}
           open={ui.topNavOpen || this.state.open}
           containerClassName="right-drawer"
-          // openSecondary={true}
           onRequestChange={this.closeNav}
           swipeAreaWidth={10}
         >
