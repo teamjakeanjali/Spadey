@@ -5,6 +5,7 @@ import EmptyState from 'components/EmptyState';
 import RecordedItem from 'components/RecordedItem';
 import { withRouter } from 'react-router-dom';
 import axios from 'axios';
+import ReportsView from 'containers/ReportsView';
 
 import { styles } from './styles.scss';
 
@@ -14,6 +15,10 @@ import * as uiActionCreators from 'core/actions/actions-ui';
 class RecordingsView extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      sentiment: '',
+      message: ''
+    };
   }
 
   componentDidMount() {
@@ -38,7 +43,6 @@ class RecordingsView extends Component {
     history.push(`/reports/${recordingId}`);
     actions.ui.openTopNav();
     console.log('LEFT OPEN!');
-
     this.getAudioInfo(userId, recordingId);
   };
 
@@ -50,7 +54,10 @@ class RecordingsView extends Component {
         recordingId: recordingId
       })
       .then(res => {
-        console.log(res);
+        this.setState({
+          sentiment: res.data.Sentiment,
+          message: res.data.Transcription
+        });
       })
       .catch(err => {
         console.log(err);

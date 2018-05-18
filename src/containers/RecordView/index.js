@@ -33,13 +33,13 @@ class RecordView extends Component {
     axios
       .get('/session')
       .then(res => {
-        console.log('this is the recordView', res.data);
+        // console.log('this is the recordView', res.data);
         if (res.data.id) {
           this.setState({
             user_id: res.data.id
           });
         }
-        console.log('@@@@@@', this.state.user_id);
+        // console.log('@@@@@@', this.state.user_id);
       })
       .catch(err => {
         console.log(err);
@@ -78,7 +78,6 @@ class RecordView extends Component {
       recording: false,
       saveRecording: true
     });
-    // this.sendAudio();
   };
 
   onStop = recording => {

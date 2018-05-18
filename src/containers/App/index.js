@@ -96,7 +96,7 @@ export class App extends Component {
                     <Redirect from="/" to="/record" />
                   </Switch>
                 </div>
-                <ReportsView />
+                <ReportsView userId={this.state.userId} />
                 <DetailsView />
                 <LeftNavBar />
               </div>

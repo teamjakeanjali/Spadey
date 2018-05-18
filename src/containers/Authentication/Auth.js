@@ -44,18 +44,18 @@ class Auth extends Component {
                   text-anchor="middle"
                   x="50%"
                   y="35%"
-                  class="text--line"
+                  className="text--line"
                 >
                   Spadey
                 </text>
               </symbol>
 
-              <g class="g-ants">
-                <use href="#s-text" class="text-copy" />
-                <use href="#s-text" class="text-copy" />
-                <use href="#s-text" class="text-copy" />
-                <use href="#s-text" class="text-copy" />
-                <use href="#s-text" class="text-copy" />
+              <g className="g-ants">
+                <use href="#s-text" className="text-copy" />
+                <use href="#s-text" className="text-copy" />
+                <use href="#s-text" className="text-copy" />
+                <use href="#s-text" className="text-copy" />
+                <use href="#s-text" className="text-copy" />
               </g>
             </svg>
           </div>
