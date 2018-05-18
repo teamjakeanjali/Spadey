@@ -94,11 +94,14 @@ app.use(require('morgan')('short'));
 
 app.use('/', express.static(path.join(__dirname, '/src/index.html')));
 
-app.get('/messageinfo', async (req, res) => {
+app.post('/messageinfo', async (req, res) => {
+  console.log('hit the route');
+  console.log('REQ', req.body);
   let userId = req.body.userId;
   let recordingId = req.body.recordingId;
 
   let message = await getMessageInfo(userId, recordingId);
+  console.log(message);
   res.send({
     transcription: message.dataValues.message,
     sentiment: message.dataValues.sentiment

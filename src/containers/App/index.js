@@ -35,7 +35,8 @@ export class App extends Component {
     this.state = {
       isLoggedIn: false,
       username: '',
-      email: ''
+      email: '',
+      userId: ''
     };
   }
 
@@ -47,7 +48,8 @@ export class App extends Component {
         console.log(res.data);
         if (res.data.id) {
           this.setState({
-            isLoggedIn: true
+            isLoggedIn: true,
+            userId: res.data.id
           });
         }
       })
@@ -83,7 +85,12 @@ export class App extends Component {
                     <Route path="/auth/login" component={Login} />
                     <Route path="/auth/register" component={Register} />
                     <Route path="/record" component={RecordView} />
-                    <Route path="/recordings" component={RecordingsView} />
+                    <Route
+                      path="/recordings"
+                      render={() => (
+                        <RecordingsView userId={this.state.userId} />
+                      )}
+                    />
                     <Route path="/recording/:id" component={RecordingsView} />
                     <Route path="/reports/:id" component={RecordingsView} />
                     <Redirect from="/" to="/record" />

@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import EmptyState from 'components/EmptyState';
 import RecordedItem from 'components/RecordedItem';
 import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 
 import { styles } from './styles.scss';
 
@@ -32,10 +33,28 @@ class RecordingsView extends Component {
   };
 
   goToReports = recordingId => {
-    const { history, actions } = this.props;
+    console.log(this.props);
+    const { history, actions, userId } = this.props;
     history.push(`/reports/${recordingId}`);
     actions.ui.openTopNav();
-    console.log('TOP OPEN!');
+    console.log('LEFT OPEN!');
+
+    this.getAudioInfo(userId, recordingId);
+  };
+
+  getAudioInfo = (userId, recordingId) => {
+    console.log(userId);
+    axios
+      .post('/messageinfo', {
+        userId: userId,
+        recordingId: recordingId
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   getRecordings() {
