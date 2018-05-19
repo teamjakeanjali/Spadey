@@ -4,16 +4,9 @@ const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 const request = require('request');
 const download = require('download');
 const { insertMessageInfo } = require('../database-pg/helper');
-const AWS = require('aws-sdk');
-require('dotenv').config();
 
 let globalUserId;
 let globalRecordingId;
-
-AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_KEY
-});
 
 const uploadWebmFile = (userId, recordingId) => {
   if (userId && recordingId) {
@@ -88,24 +81,6 @@ const getFlacFile = id => {
 
   request(options, callback);
 };
-
-const s3 = new AWS.S3();
-
-const params = {
-  Bucket: process.env.AWS_BUCKET_NAME,
-  Body: fs.createReadStream('./assets/audio.webm'),
-  Key: '1234'
-};
-
-s3.upload(params, (err, data) => {
-  if (err) {
-    console.log('ERR', err);
-  }
-
-  if (data) {
-    console.log('Uploaded in:', data.Location);
-  }
-});
 
 const downloadFile = link => {
   download(link)
