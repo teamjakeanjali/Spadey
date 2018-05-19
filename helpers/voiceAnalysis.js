@@ -3,15 +3,12 @@ const speech = require('@google-cloud/speech').v1p1beta1;
 const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 const request = require('request');
 const download = require('download');
-const { insertMessageInfo } = require('../database-pg/helper');
+const { updateMessage } = require('../database-pg/helper');
 
-let globalUserId;
 let globalRecordingId;
 
-const uploadWebmFile = (userId, recordingId) => {
-  if (userId && recordingId) {
-    console.log(userId, recordingId);
-    globalUserId = userId;
+const uploadWebmFile = recordingId => {
+  if (recordingId) {
     globalRecordingId = recordingId;
   }
 
@@ -142,16 +139,11 @@ const analyzeSpeech = () => {
         if (error) {
           console.log('error:', error);
         } else {
-          insertMessageInfo(
-            transcription,
-            JSON.stringify(response),
+          updateMessage(
             globalRecordingId,
-            globalUserId
+            transcription,
+            JSON.stringify(response)
           );
-          console.log('TRANSCRIPT', transcription);
-          console.log('SENTIMENT', JSON.stringify(response));
-          console.log('userid', globalUserId);
-          console.log('recordingId', globalRecordingId);
         }
       });
     })

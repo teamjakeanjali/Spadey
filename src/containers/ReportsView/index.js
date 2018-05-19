@@ -15,8 +15,7 @@ import {
 } from 'material-ui';
 import Button from 'components/Button';
 import NavigationBack from 'material-ui/svg-icons/navigation/arrow-forward';
-import PlayButton from 'material-ui/svg-icons/av/play-arrow';
-import PauseButton from 'material-ui/svg-icons/av/pause';
+import LinearProgress from 'material-ui/LinearProgress';
 
 /* actions */
 import * as uiActionCreators from 'core/actions/actions-ui';
@@ -69,14 +68,25 @@ class ReportsView extends Component {
 
   getContent() {
     const { audioBlob, isPlaying } = this.state;
-    let body, text;
+    let body, text, sentimentTones;
+    console.log(this.props.audio.sentiment);
+    console.log('array of tones', this.props.audio.sentiment.document_tone);
+    if (this.props.audio.sentiment.document_tone) {
+      sentimentTones = this.props.audio.sentiment.document_tone.tones;
+    }
 
     if (audioBlob) {
       text = <text>{this.props.audio.transcription}</text>;
       body = (
         <div>
           <br />
-          <Table>
+          {sentimentTones.map((tone, i) => (
+            <div>
+              {tone.tone_name}
+              {tone.score}
+            </div>
+          ))}
+          {/* <Table>
             <TableHeader>
               <TableRow>
                 <TableHeaderColumn>ID</TableHeaderColumn>
@@ -111,7 +121,7 @@ class ReportsView extends Component {
                 <TableRowColumn>Unemployed</TableRowColumn>
               </TableRow>
             </TableBody>
-          </Table>
+          </Table> */}
         </div>
       );
     } else {

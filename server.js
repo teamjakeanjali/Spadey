@@ -6,7 +6,11 @@ const path = require('path');
 const pg = require('pg');
 const session = require('express-session');
 const passport = require('passport');
-const { getMessageInfo } = require('./database-pg/helper');
+const {
+  getMessageInfo,
+  insertMessageInfo,
+  getAllMessages
+} = require('./database-pg/helper');
 const { Message } = require('./database-pg/index');
 const bodyParser = require('body-parser');
 const app = express();
@@ -95,27 +99,22 @@ app.use(require('morgan')('short'));
 
 app.use('/', express.static(path.join(__dirname, '/src/index.html')));
 
+app.get('/messages', async (req, res) => {
+  let messages = await getAllMessages(globalUserId);
+
+  res.send(messages);
+});
+
 app.post('/messageinfo', async (req, res) => {
   let userId = req.body.userId;
   let recordingId = req.body.recordingId;
+  console.log('BODY', req.body);
 
   let message = await getMessageInfo(userId, recordingId);
 
   res.send({
-    sentiment: message.dataValues.sentiment,
+    sentiment: JSON.parse(message.dataValues.sentiment),
     transcription: message.dataValues.message
-  });
-});
-
-app.get('/messageinfo', async (req, res) => {
-  let userId = req.body.userId;
-  let recordingId = req.body.recordingId;
-
-  let message = await getMessageInfo(userId, recordingId);
-
-  res.send({
-    Sentiment: message.dataValues.sentiment,
-    Transcription: message.dataValues.message
   });
 });
 
@@ -136,8 +135,21 @@ const io = socket(server);
 io.of('/audio').on('connection', function(socket) {
   ss(socket).on('send-audio', async (stream, data) => {
     let recordingId = data.recordingId;
+    let recordingTitle = data.recordingTitle;
+    let recordingStartTime = data.recordingStartTime.toString();
+    let recordingStopTime = data.recordingStopTime.toString();
+    let fileSize = data.size.toString();
+
+    insertMessageInfo(
+      recordingId,
+      globalUserId,
+      recordingTitle,
+      recordingStartTime,
+      recordingStopTime,
+      fileSize
+    );
     const fileName = 'assets/audio.webm';
     await stream.pipe(fs.createWriteStream(fileName));
-    await voiceAnalysis.uploadWebmFile(globalUserId, recordingId);
+    await voiceAnalysis.uploadWebmFile(recordingId);
   });
 });

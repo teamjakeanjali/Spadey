@@ -90,6 +90,7 @@
     "pg": "^7.4.3",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
+    "react-d3-basic": "^1.6.11",
     "react-dom": "^16.2.0",
     "react-mic": "^9.1.2",
     "react-redux": "^5.0.6",
