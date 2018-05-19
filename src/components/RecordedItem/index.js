@@ -13,10 +13,14 @@ import Button from 'components/Button';
 import { styles } from './styles.scss';
 
 export default function RecordedItem(props) {
-  const { goToReports, goToRecording, sentiment, transcription } = props;
-  const { title, blob, startTime, stopTime } = props.item;
+  const { goToReports, goToRecording } = props;
+  // const { recordingTitle, blob } = props.item;
+  const title = props.item.recordingTitle;
+  const startTime = parseInt(props.item.recordingStartTime);
+  const stopTime = parseInt(props.item.recordingStopTime);
+  console.log(startTime, stopTime);
   const createdAt = moment(startTime).format('MMMM DD YYYY, h:mm a');
-  const totalSize = (blob.size / 1000000).toFixed(2);
+  const totalSize = (parseInt(props.item.fileSize) / 1000000).toFixed(2);
   const length = (moment.duration(stopTime - startTime).asSeconds() / 60)
     .toFixed(2)
     .replace('.', ':');
@@ -27,7 +31,7 @@ export default function RecordedItem(props) {
         <h2 className="title">{title || 'Recording X'}</h2>
         <div className="created-at">{createdAt}</div>
         <div>
-          <Button
+          {/* <Button
             className="play"
             onTouchTap={goToDetailsView.bind(null, goToRecording)}
             secondary={true}
@@ -35,7 +39,7 @@ export default function RecordedItem(props) {
             floating={true}
             disabled={true}
             icon={<PlayButton />}
-          />
+          /> */}
         </div>
         <div>
           <Button

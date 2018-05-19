@@ -46,7 +46,7 @@ class RecordView extends Component {
       });
   }
 
-  sendAudio(recording) {
+  sendAudio(recording, title) {
     let socket = io.connect('/audio');
     let file = recording.blob;
     let stream = ss.createStream();
@@ -57,7 +57,7 @@ class RecordView extends Component {
       mimetype: file.mimetype,
       size: file.size,
       recordingId: recording.id,
-      recordingTitle: recording.title,
+      recordingTitle: title,
       recordingStartTime: recording.startTime,
       recordingStopTime: recording.stopTime
     });
@@ -84,13 +84,14 @@ class RecordView extends Component {
   };
 
   onStop = recording => {
+    let title = prompt('Please enter a recording title:');
     const { saveRecording } = this.state;
     const { actions, history } = this.props;
 
     if (saveRecording) {
       history.push('/recordings');
       actions.audio.saveRecording(recording);
-      this.sendAudio(recording);
+      this.sendAudio(recording, title);
     }
   };
 

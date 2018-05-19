@@ -100,7 +100,7 @@ app.use(require('morgan')('short'));
 app.use('/', express.static(path.join(__dirname, '/src/index.html')));
 
 app.get('/messages', async (req, res) => {
-  let messages = await getAllMessages(3);
+  let messages = await getAllMessages(globalUserId);
 
   res.send(messages);
 });
@@ -108,6 +108,7 @@ app.get('/messages', async (req, res) => {
 app.post('/messageinfo', async (req, res) => {
   let userId = req.body.userId;
   let recordingId = req.body.recordingId;
+  console.log('BODY', req.body);
 
   let message = await getMessageInfo(userId, recordingId);
 

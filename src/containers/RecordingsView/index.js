@@ -17,8 +17,7 @@ class RecordingsView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      sentiment: '',
-      message: ''
+      messages: []
     };
   }
 
@@ -30,6 +29,8 @@ class RecordingsView extends Component {
     } else if (match.path === 'reports/:id') {
       actions.ui.openTopNav();
     }
+
+    this.getAllMessages();
   }
 
   goToRecording = recordingId => {
@@ -39,11 +40,9 @@ class RecordingsView extends Component {
   };
 
   goToReports = recordingId => {
-    console.log(this.props);
     const { history, actions, userId } = this.props;
     history.push(`/reports/${recordingId}`);
     actions.ui.openTopNav();
-    console.log('LEFT OPEN!');
     this.getAudioInfo(userId, recordingId);
   };
 
@@ -56,10 +55,19 @@ class RecordingsView extends Component {
       })
       .then(res => {
         this.props.actions.audio.getAudioTranscription(res.data);
-        // this.setState({
-        //   sentiment: res.data.Sentiment,
-        //   message: res.data.Transcription
-        // });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  getAllMessages = () => {
+    axios
+      .get('/messages')
+      .then(res => {
+        this.setState({
+          messages: res.data
+        });
       })
       .catch(err => {
         console.log(err);
@@ -68,16 +76,17 @@ class RecordingsView extends Component {
 
   getRecordings() {
     const { list } = this.props.audio;
-
-    const recordings = list.map((recordedItem, index) => {
+    console.log(this.state.messages);
+    const recordings = this.state.messages.map((recordedItem, index) => {
       return (
         <li key={`recording-${index}`}>
           <RecordedItem
             item={recordedItem}
-            goToRecording={this.goToRecording.bind(null, recordedItem.id)}
-            goToReports={this.goToReports.bind(null, recordedItem.id)}
-            transcription={this.state.transcription}
-            sentiment={this.state.sentiment}
+            goToRecording={this.goToRecording.bind(
+              null,
+              recordedItem.recordingId
+            )}
+            goToReports={this.goToReports.bind(null, recordedItem.recordingId)}
           />
         </li>
       );
@@ -88,7 +97,7 @@ class RecordingsView extends Component {
   displayRecordings() {
     const { list } = this.props.audio;
 
-    if (list && list.length) {
+    if (this.state.messages && this.state.messages.length) {
       const audioItems = this.getRecordings();
       return <ul>{audioItems}</ul>;
     } else {
