@@ -13,7 +13,7 @@ import Button from 'components/Button';
 import { styles } from './styles.scss';
 
 export default function RecordedItem(props) {
-  const { goToReports, goToRecording } = props;
+  const { goToReports, goToRecording, sentiment, transcription } = props;
   const { title, blob, startTime, stopTime } = props.item;
   const createdAt = moment(startTime).format('MMMM DD YYYY, h:mm a');
   const totalSize = (blob.size / 1000000).toFixed(2);

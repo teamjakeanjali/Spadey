@@ -102,8 +102,8 @@ app.post('/messageinfo', async (req, res) => {
   let message = await getMessageInfo(userId, recordingId);
 
   res.send({
-    Sentiment: message.dataValues.sentiment,
-    Transcription: message.dataValues.message
+    sentiment: message.dataValues.sentiment,
+    transcription: message.dataValues.message
   });
 });
 

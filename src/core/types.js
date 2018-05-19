@@ -5,6 +5,7 @@ export default keyMirror({
   CLOSE_NAV: null,
   SAVE_RECORDING: null,
   GET_ALL_RECORDINGS: null,
+  GET_AUDIO_INFO: null,
   OPEN_RIGHT_NAV: null,
   CLOSE_RIGHT_NAV: null,
   OPEN_TOP_NAV: null,

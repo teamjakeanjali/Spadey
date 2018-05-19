@@ -2,6 +2,14 @@ import types from 'core/types';
 import { storeRecording, getAllStoredRecordings } from 'core/libs/lib-cache';
 import uuid from 'uuid';
 
+//Get sentiment and transcription
+export function getAudioTranscription(analysis) {
+  return {
+    type: types.GET_AUDIO_INFO,
+    analysis: analysis
+  };
+}
+
 //saveRecording - Save an audio file
 export function saveRecording(recording) {
   return (dispatch, getState) => {

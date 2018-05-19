@@ -11,6 +11,7 @@ import { styles } from './styles.scss';
 
 /* actions */
 import * as uiActionCreators from 'core/actions/actions-ui';
+import * as audioActionCreators from 'core/actions/actions-audio';
 
 class RecordingsView extends Component {
   constructor(props) {
@@ -47,17 +48,19 @@ class RecordingsView extends Component {
   };
 
   getAudioInfo = (userId, recordingId) => {
-    console.log(userId);
+    console.log('user', userId);
     axios
       .post('/messageinfo', {
         userId: userId,
         recordingId: recordingId
       })
       .then(res => {
-        this.setState({
-          sentiment: res.data.Sentiment,
-          message: res.data.Transcription
-        });
+        this.props.actions.audio.getAudioTranscription(res.data);
+        console.log(res.data);
+        // this.setState({
+        //   sentiment: res.data.Sentiment,
+        //   message: res.data.Transcription
+        // });
       })
       .catch(err => {
         console.log(err);
@@ -74,6 +77,8 @@ class RecordingsView extends Component {
             item={recordedItem}
             goToRecording={this.goToRecording.bind(null, recordedItem.id)}
             goToReports={this.goToReports.bind(null, recordedItem.id)}
+            transcription={this.state.transcription}
+            sentiment={this.state.sentiment}
           />
         </li>
       );
@@ -107,7 +112,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     actions: {
-      ui: bindActionCreators(uiActionCreators, dispatch)
+      ui: bindActionCreators(uiActionCreators, dispatch),
+      audio: bindActionCreators(audioActionCreators, dispatch)
     }
   };
 }

@@ -31,9 +31,7 @@ class ReportsView extends Component {
     this.state = {
       open: false,
       audioBlob: null,
-      isPlaying: false,
-      sentiment: '',
-      message: ''
+      isPlaying: false
     };
   }
 
@@ -74,7 +72,7 @@ class ReportsView extends Component {
     let body, text;
 
     if (audioBlob) {
-      text = <text>{this.state.message}</text>;
+      text = <text>{this.props.audio.transcription}</text>;
       body = (
         <div>
           <br />
