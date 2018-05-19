@@ -45,13 +45,25 @@ const User = sequelize.define('users', {
 });
 
 const Message = sequelize.define('message', {
+  recordingId: {
+    type: Sequelize.STRING
+  },
+  recordingTitle: {
+    type: Sequelize.STRING
+  },
+  recordingStartTime: {
+    type: Sequelize.STRING
+  },
+  recordingStopTime: {
+    type: Sequelize.STRING
+  },
+  fileSize: {
+    type: Sequelize.STRING
+  },
   message: {
     type: Sequelize.STRING
   },
   sentiment: {
-    type: Sequelize.STRING
-  },
-  recordingId: {
     type: Sequelize.STRING
   }
 });
@@ -59,7 +71,7 @@ const Message = sequelize.define('message', {
 Message.belongsTo(User);
 
 sequelize.sync().then(() => {
-  console.log('User table created');
+  console.log('Database synced');
 });
 
 module.exports = {

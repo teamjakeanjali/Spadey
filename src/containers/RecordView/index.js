@@ -56,7 +56,10 @@ class RecordView extends Component {
     ss(socket).emit('send-audio', stream, {
       mimetype: file.mimetype,
       size: file.size,
-      recordingId: recording.id
+      recordingId: recording.id,
+      recordingTitle: recording.title,
+      recordingStartTime: recording.startTime,
+      recordingStopTime: recording.stopTime
     });
     ss.createBlobReadStream(file).pipe(stream);
   }

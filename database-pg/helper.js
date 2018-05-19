@@ -1,6 +1,22 @@
 const bcrypt = require('bcrypt');
 const { User, Message } = require('./index');
 
+const getAllMessages = userId => {
+  return new Promise((resolve, reject) => {
+    Message.findAll({
+      where: {
+        userId: userId
+      }
+    })
+      .then(messages => {
+        resolve(messages);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+};
+
 const getMessageInfo = (userId, recordingId) => {
   return new Promise((resolve, reject) => {
     Message.findOne({
@@ -18,14 +34,41 @@ const getMessageInfo = (userId, recordingId) => {
   });
 };
 
-const insertMessageInfo = (transcription, sentiment, recordingId, userId) => {
+const insertMessageInfo = (
+  recordingId,
+  userId,
+  recordingTitle,
+  recordingStartTime,
+  recordingStopTime,
+  fileSize
+) => {
   return new Promise((resolve, reject) => {
     Message.create({
-      message: transcription,
-      sentiment: sentiment,
       recordingId: recordingId,
+      recordingTitle: recordingTitle,
+      recordingStartTime: recordingStartTime,
+      recordingStopTime: recordingStopTime,
+      fileSize: fileSize,
       userId: userId
     })
+      .then(message => {
+        resolve(message);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+};
+
+const updateMessage = (recordingId, message, sentiment) => {
+  return new Promise((resolve, reject) => {
+    Message.update(
+      {
+        message: message,
+        sentiment: sentiment
+      },
+      { where: { recordingId: recordingId } }
+    )
       .then(message => {
         resolve(message);
       })
@@ -120,5 +163,7 @@ module.exports = {
   findOrCreateUserByGoogleId,
   createUser,
   insertMessageInfo,
-  getMessageInfo
+  getMessageInfo,
+  updateMessage,
+  getAllMessages
 };
