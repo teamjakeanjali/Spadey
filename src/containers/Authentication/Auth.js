@@ -10,27 +10,39 @@ class Auth extends Component {
     super(props);
     this.state = {
       login: false,
-      Register: false
+      register: false
     };
   }
 
   handleLoginClick = () => {
     this.setState({
-      login: true
+      login: true,
+      register: false
     });
   };
 
   handleSignupClick = () => {
     this.setState({
-      signup: true
+      login: false,
+      register: true
     });
   };
 
   render() {
     if (this.state.login) {
-      return <Login handleAuth={this.props.handleAuth} />;
-    } else if (this.state.signup) {
-      return <Register handleAuth={this.props.handleAuth} />;
+      return (
+        <Login
+          handleAuth={this.props.handleAuth}
+          handleSignupClick={this.handleSignupClick}
+        />
+      );
+    } else if (this.state.register) {
+      return (
+        <Register
+          handleAuth={this.props.handleAuth}
+          handleLoginClick={this.handleLoginClick}
+        />
+      );
     } else {
       return (
         <form className="login-form">

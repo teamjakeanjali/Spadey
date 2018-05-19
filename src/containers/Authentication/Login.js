@@ -57,6 +57,11 @@ class Login extends Component {
           placeholder="Username"
           value={this.state.username}
           onChange={this.handleChangeUsername}
+          onKeyUp={input => {
+            if (input.keyCode === 13) {
+              this.handleSubmit();
+            }
+          }}
         />
         <input
           type="password"
@@ -80,7 +85,12 @@ class Login extends Component {
           >
             Login
           </a>
-          <a className="subtle-link">Sign up</a>
+          <a
+            className="subtle-link"
+            onClick={() => this.props.handleSignupClick()}
+          >
+            Sign up
+          </a>
         </div>
         <div>
           <a className="google-btn" href="/auth/google">

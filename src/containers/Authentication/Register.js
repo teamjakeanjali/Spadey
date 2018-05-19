@@ -91,7 +91,12 @@ class Register extends Component {
           >
             Register
           </a>
-          <a className="subtle-link">Already have account...? Login</a>
+          <a
+            className="subtle-link"
+            onClick={() => this.props.handleLoginClick()}
+          >
+            Already have account...? Login
+          </a>
         </div>
       </form>
     );
