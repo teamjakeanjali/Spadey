@@ -56,7 +56,6 @@ class RecordingsView extends Component {
       })
       .then(res => {
         this.props.actions.audio.getAudioTranscription(res.data);
-        console.log(res.data);
         // this.setState({
         //   sentiment: res.data.Sentiment,
         //   message: res.data.Transcription
