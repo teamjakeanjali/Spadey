@@ -2,20 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
-import axios from 'axios';
-import {
-  IconButton,
-  Drawer,
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn
-} from 'material-ui';
+import { IconButton, Drawer } from 'material-ui';
 import Button from 'components/Button';
 import NavigationBack from 'material-ui/svg-icons/navigation/arrow-forward';
-import LinearProgress from 'material-ui/LinearProgress';
+import ReactChartkick, { BarChart } from 'react-chartkick';
+import Chart from 'chart.js';
+
+ReactChartkick.addAdapter(Chart);
 
 /* actions */
 import * as uiActionCreators from 'core/actions/actions-ui';
@@ -67,12 +60,17 @@ class ReportsView extends Component {
   };
 
   getContent() {
-    const { audioBlob, isPlaying } = this.state;
+    const { audioBlob } = this.state;
     let body, text, sentimentTones;
     console.log(this.props.audio.sentiment);
     console.log('array of tones', this.props.audio.sentiment.document_tone);
+    let data = [];
     if (this.props.audio.sentiment.document_tone) {
       sentimentTones = this.props.audio.sentiment.document_tone.tones;
+      for (let tone of sentimentTones) {
+        // let score = parseInt(tone.score) * 100 + '%';
+        data.push([tone.tone_name, 100 * tone.score]);
+      }
     }
 
     if (audioBlob) {
@@ -80,48 +78,18 @@ class ReportsView extends Component {
       body = (
         <div>
           <br />
-          {sentimentTones.map((tone, i) => (
+          <BarChart
+            data={data}
+            xtitle="Percentage"
+            ytitle="Emotion"
+            suffix="%"
+            colors={['#25EF40', '#283D43']}
+          />
+          {/* {sentimentTones.map((tone, i) => (
             <div>
-              {tone.tone_name}
-              {tone.score}
+              <BarChart data={[[tone.tone_name, tone.score]]} />
             </div>
-          ))}
-          {/* <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHeaderColumn>ID</TableHeaderColumn>
-                <TableHeaderColumn>Status</TableHeaderColumn>
-                <TableHeaderColumn>Data</TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableRowColumn>1</TableRowColumn>
-                <TableRowColumn>John Smith</TableRowColumn>
-                <TableRowColumn>Employed</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>2</TableRowColumn>
-                <TableRowColumn>Randal White</TableRowColumn>
-                <TableRowColumn>Unemployed</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>3</TableRowColumn>
-                <TableRowColumn>Stephanie Sanders</TableRowColumn>
-                <TableRowColumn>Employed</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>4</TableRowColumn>
-                <TableRowColumn>Steve Brown</TableRowColumn>
-                <TableRowColumn>Employed</TableRowColumn>
-              </TableRow>
-              <TableRow>
-                <TableRowColumn>5</TableRowColumn>
-                <TableRowColumn>Christopher Nolan</TableRowColumn>
-                <TableRowColumn>Unemployed</TableRowColumn>
-              </TableRow>
-            </TableBody>
-          </Table> */}
+          ))} */}
         </div>
       );
     } else {

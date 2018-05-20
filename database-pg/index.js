@@ -8,10 +8,10 @@ const options = {
     dialectModulePath: 'pg',
     trustedConnection: true
   },
-  host: process.env.DATABASE_URL || 'host',
-  database: process.env.DATABASE || 'spadey',
-  username: process.env.USERNAME,
-  password: process.env.PASSWORD
+  host: process.env.DATABASE_URL || 'localhost',
+  database: process.env.DATABASE || 'spadey'
+  // username: process.env.USERNAME,
+  // password: process.env.PASSWORD
 };
 
 const dbPath = options;
@@ -61,10 +61,10 @@ const Message = sequelize.define('message', {
     type: Sequelize.STRING
   },
   message: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING(1234)
   },
   sentiment: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING(1234)
   }
 });
 
