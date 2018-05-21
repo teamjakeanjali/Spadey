@@ -68,7 +68,6 @@ class ReportsView extends Component {
     if (this.props.audio.sentiment.document_tone) {
       sentimentTones = this.props.audio.sentiment.document_tone.tones;
       for (let tone of sentimentTones) {
-        // let score = parseInt(tone.score) * 100 + '%';
         data.push([tone.tone_name, 100 * tone.score]);
       }
     }
