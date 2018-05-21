@@ -52,12 +52,34 @@ export class App extends Component {
             userId: res.data.id
           });
         }
+        console.log('@@@', this.state.userId);
       })
       .catch(err => {
         console.log(err);
       });
     const { actions } = this.props;
     actions.audio.getAllRecordings();
+  }
+
+  componentDidUpdate() {
+    if (this.state.userId === '') {
+      axios
+        .get('/session')
+        .then(res => {
+          //THIS IS THE ENTIRE USER
+          console.log(res.data);
+          if (res.data.id) {
+            this.setState({
+              isLoggedIn: true,
+              userId: res.data.id
+            });
+          }
+          console.log('@@@', this.state.userId);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 
   handleAuth = data => {

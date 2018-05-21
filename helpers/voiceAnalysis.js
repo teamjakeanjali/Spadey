@@ -4,6 +4,7 @@ const ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 const request = require('request');
 const download = require('download');
 const { updateMessage } = require('../database-pg/helper');
+require('dotenv').config();
 
 let globalRecordingId;
 
