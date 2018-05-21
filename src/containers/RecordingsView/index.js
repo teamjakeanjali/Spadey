@@ -17,7 +17,8 @@ class RecordingsView extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: []
+      messages: [],
+      isRefresh: false
     };
   }
 
@@ -29,8 +30,16 @@ class RecordingsView extends Component {
     } else if (match.path === 'reports/:id') {
       actions.ui.openTopNav();
     }
-
     this.getAllMessages();
+  }
+
+  componentDidUpdate() {
+    if (!this.state.isRefresh) {
+      this.getAllMessages();
+      this.setState({
+        isRefresh: true
+      });
+    }
   }
 
   goToRecording = recordingId => {

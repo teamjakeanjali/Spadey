@@ -9,9 +9,9 @@ const options = {
     trustedConnection: true
   },
   host: process.env.DATABASE_URL || 'localhost',
-  database: process.env.DATABASE || 'spadey'
-  // username: process.env.USERNAME,
-  // password: process.env.PASSWORD
+  database: process.env.DATABASE || 'spadey',
+  username: process.env.USERNAME,
+  password: process.env.PASSWORD
 };
 
 const dbPath = options;
