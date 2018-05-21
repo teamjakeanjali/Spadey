@@ -84,11 +84,11 @@ class RecordView extends Component {
   };
 
   onStop = recording => {
-    let title = prompt('Please enter a recording title:');
     const { saveRecording } = this.state;
     const { actions, history } = this.props;
-
+    
     if (saveRecording) {
+      let title = prompt('Please enter a recording title:');
       history.push('/recordings');
       actions.audio.saveRecording(recording);
       this.sendAudio(recording, title);

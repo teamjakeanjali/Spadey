@@ -33,7 +33,7 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENTID,
       clientSecret: process.env.GOOGLE_CLIENTSECRET
     },
-    (accesToken, refreshToken, profile, done) => {
+    (accessToken, refreshToken, profile, done) => {
       findOrCreateUserByGoogleId(profile.id, profile.displayName)
         .then(user => {
           done(null, user);
