@@ -61,16 +61,37 @@ class ReportsView extends Component {
 
   getContent() {
     const { audioBlob } = this.state;
-    let body, text, sentimentTones;
+    let body, text, sentimentTones, sentenceTones;
+    let dataObj = {};
     let data = [];
 
     if (audioBlob) {
       if (this.props.audio.sentiment.document_tone) {
         sentimentTones = this.props.audio.sentiment.document_tone.tones;
+        sentenceTones = this.props.audio.sentiment.sentences_tone;
+
         for (let tone of sentimentTones) {
-          data.push([tone.tone_name, 100 * tone.score]);
+          dataObj[tone.tone_name] = 100 * tone.score;
+        }
+
+        for (let sentenceTone of sentenceTones) {
+          if (sentenceTone.tones.length > 0) {
+            for (let tone in sentenceTone.tones) {
+              if (!Object.keys(dataObj).includes(tone.tone_name)) {
+                if (tone.tone_name) {
+                  dataObj[tone.tone_name] = 100 * tone.score;
+                }
+              }
+            }
+          }
         }
       }
+
+      //Convert object back to array
+      for (let key in dataObj) {
+        data.push([key, dataObj[key]]);
+      }
+
       text = <text>{this.props.audio.transcription}</text>;
       body = (
         <div>
@@ -80,7 +101,7 @@ class ReportsView extends Component {
             xtitle="Percentage"
             ytitle="Emotion"
             suffix="%"
-            colors={['#25EF40', '#283D43']}
+            colors={['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6']}
           />
         </div>
       );

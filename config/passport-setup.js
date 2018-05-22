@@ -45,24 +45,24 @@ passport.use(
   )
 );
 
-passport.use(
-  new FacebookStrategy(
-    {
-      callbackURL: '/auth/facebook/redirect',
-      clientID: process.env.FACEBOOK_APP_ID,
-      clientSecret: process.env.FACEBOOK_APP_SECRET
-    },
-    (accessToken, refreshToken, profile, cb) => {
-      findOrCreateUserByFacebookId(profile.id, profile.displayName)
-        .then(user => {
-          done(null, user);
-        })
-        .catch(err => {
-          done(err);
-        });
-    }
-  )
-);
+// passport.use(
+//   new FacebookStrategy(
+//     {
+//       callbackURL: '/auth/facebook/redirect',
+//       clientID: process.env.FACEBOOK_APP_ID,
+//       clientSecret: process.env.FACEBOOK_APP_SECRET
+//     },
+//     (accessToken, refreshToken, profile, cb) => {
+//       findOrCreateUserByFacebookId(profile.id, profile.displayName)
+//         .then(user => {
+//           done(null, user);
+//         })
+//         .catch(err => {
+//           done(err);
+//         });
+//     }
+//   )
+// );
 
 passport.use(
   'local-login',

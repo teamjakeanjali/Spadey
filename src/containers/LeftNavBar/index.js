@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Drawer, AppBar, Divider } from 'material-ui';
-
+import { Link } from 'react-router-dom';
 /* component styles */
 import { styles } from './styles.scss';
 import './styles.scss';
@@ -34,6 +34,7 @@ class LeftNavBar extends Component {
               <span />Logout
             </a>
           </div>
+          <Link to="/overallanalysis">Overall Analysis</Link>
         </Drawer>
       </div>
     );
