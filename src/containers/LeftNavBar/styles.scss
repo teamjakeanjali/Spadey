@@ -1,13 +1,32 @@
 @import '../../containers/App/styles/variables';
 
 :local(.styles) {
-
   position: relative;
   z-index: 100000;
 
-  div > div:nth-child(2) > div {
+  .head {
     background-color: $darkGrey !important;
     height: 88px;
   }
+}
 
+.logout {
+  float: center;
+  width: 30%;
+  text-align: center;
+  border: 1px solid black;
+  background: transparent;
+  color: black;
+  display: block;
+  margin: 1rem auto;
+  min-width: 1px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: 250ms background ease-in;
+  &:hover,
+  &:focus {
+    background: black;
+    color: black;
+    transition: 250ms background ease-in;
+  }
 }
