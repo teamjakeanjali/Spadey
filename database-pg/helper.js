@@ -135,6 +135,25 @@ const findOrCreateUserByGoogleId = (id, username) => {
   });
 };
 
+const findOrCreateUserByFacebookId = (id, username) => {
+  return new Promise((resolve, reject) => {
+    User.findOrCreate({
+      where: {
+        facebookID: id
+      },
+      defaults: {
+        username: username
+      }
+    })
+      .then(([user, created]) => {
+        resolve(user);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+};
+
 const createUser = userInfo => {
   return new Promise((resolve, reject) => {
     const { username, email, password } = userInfo;
@@ -161,6 +180,7 @@ const createUser = userInfo => {
 module.exports = {
   findUserById,
   findOrCreateUserByGoogleId,
+  findOrCreateUserByFacebookId,
   createUser,
   insertMessageInfo,
   getMessageInfo,
