@@ -62,17 +62,15 @@ class ReportsView extends Component {
   getContent() {
     const { audioBlob } = this.state;
     let body, text, sentimentTones;
-    console.log(this.props.audio.sentiment);
-    console.log('array of tones', this.props.audio.sentiment.document_tone);
     let data = [];
-    if (this.props.audio.sentiment.document_tone) {
-      sentimentTones = this.props.audio.sentiment.document_tone.tones;
-      for (let tone of sentimentTones) {
-        data.push([tone.tone_name, 100 * tone.score]);
-      }
-    }
 
     if (audioBlob) {
+      if (this.props.audio.sentiment.document_tone) {
+        sentimentTones = this.props.audio.sentiment.document_tone.tones;
+        for (let tone of sentimentTones) {
+          data.push([tone.tone_name, 100 * tone.score]);
+        }
+      }
       text = <text>{this.props.audio.transcription}</text>;
       body = (
         <div>
@@ -84,13 +82,10 @@ class ReportsView extends Component {
             suffix="%"
             colors={['#25EF40', '#283D43']}
           />
-          {/* {sentimentTones.map((tone, i) => (
-            <div>
-              <BarChart data={[[tone.tone_name, tone.score]]} />
-            </div>
-          ))} */}
         </div>
       );
+    } else if (!this.props.audio.sentiment) {
+      body = <div>No sentiment found in recording.</div>;
     } else {
       body = <div>No recording was found</div>;
     }

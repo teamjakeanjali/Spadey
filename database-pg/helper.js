@@ -6,7 +6,8 @@ const getAllMessages = userId => {
     Message.findAll({
       where: {
         userId: userId
-      }
+      },
+      order: [['createdAt', 'DESC']]
     })
       .then(messages => {
         resolve(messages);

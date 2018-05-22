@@ -65,10 +65,10 @@ const Message = sequelize.define('message', {
     type: Sequelize.STRING
   },
   message: {
-    type: Sequelize.STRING(1234)
+    type: Sequelize.TEXT
   },
   sentiment: {
-    type: Sequelize.STRING(1234)
+    type: Sequelize.TEXT
   }
 });
 

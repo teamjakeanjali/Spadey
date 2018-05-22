@@ -105,10 +105,38 @@ app.get('/messages', async (req, res) => {
   res.send(messages);
 });
 
+app.get('/aggregate', async (req, res) => {
+  let messages = await getAllMessages(globalUserId);
+  const results = [];
+  for (let message of messages) {
+    let sentimentCount = 0;
+    let sentiment = JSON.parse(message.dataValues.sentiment);
+
+    for (let tone of sentiment.document_tone.tones) {
+      console.log(tone);
+      if (
+        tone.tone_name === 'Joy' ||
+        tone.tone_name === 'Confident' ||
+        tone.tone_name === 'Analytical'
+      ) {
+        sentimentCount++;
+      } else if (
+        tone.tone_name === 'Sadness' ||
+        tone.tone_name === 'Anger' ||
+        tone.tone_name === 'Fear'
+      ) {
+        sentimentCount--;
+      }
+    }
+    results.push([message.createdAt, sentimentCount]);
+  }
+
+  res.send(results);
+});
+
 app.post('/messageinfo', async (req, res) => {
   let userId = req.body.userId;
   let recordingId = req.body.recordingId;
-  console.log('BODY', req.body);
 
   let message = await getMessageInfo(userId, recordingId);
 
@@ -140,7 +168,7 @@ io.of('/audio').on('connection', function(socket) {
     let recordingStopTime = data.recordingStopTime.toString();
     let fileSize = data.size.toString();
 
-    insertMessageInfo(
+    await insertMessageInfo(
       recordingId,
       globalUserId,
       recordingTitle,
