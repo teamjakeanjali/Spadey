@@ -84,7 +84,6 @@ class RecordingsView extends Component {
   };
 
   getRecordings() {
-    const { list } = this.props.audio;
     console.log(this.state.messages);
     const recordings = this.state.messages.map((recordedItem, index) => {
       return (

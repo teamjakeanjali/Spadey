@@ -5,6 +5,7 @@ import { Drawer, AppBar, Divider } from 'material-ui';
 
 /* component styles */
 import { styles } from './styles.scss';
+import './styles.scss';
 
 /* actions */
 import * as uiActionCreators from 'core/actions/actions-ui';
@@ -27,10 +28,12 @@ class LeftNavBar extends Component {
           onRequestChange={this.closeNav}
         >
           <AppBar title="" />
-          <a href="/auth/logout">
-            <span />Logout
-          </a>
           <Divider />
+          <div className="logout">
+            <a href="/auth/logout">
+              <span />Logout
+            </a>
+          </div>
         </Drawer>
       </div>
     );
