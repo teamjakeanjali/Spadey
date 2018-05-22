@@ -96,6 +96,9 @@ class Login extends Component {
           <a className="google-btn" href="/auth/google">
             Google+
           </a>
+          {/* <a className="facebook-btn" href="/auth/facebook">
+            Facebook
+          </a> */}
         </div>
       </form>
     );
