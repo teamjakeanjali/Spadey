@@ -46,7 +46,7 @@ class RecordView extends Component {
   }
 
   sendAudio(recording, title) {
-    let socket = io.connect('https://www.spadey.net/audio');
+    let socket = io.connect('/audio');
     let file = recording.blob;
     let stream = ss.createStream();
 
