@@ -175,7 +175,7 @@ io.on('connection', function(socket) {
     let recordingStartTime = data.recordingStartTime.toString();
     let recordingStopTime = data.recordingStopTime.toString();
     let fileSize = data.size.toString();
-
+    console.log('send audio error');
     await insertMessageInfo(
       recordingId,
       globalUserId,
@@ -184,8 +184,10 @@ io.on('connection', function(socket) {
       recordingStopTime,
       fileSize
     );
+    console.log('insert message info?');
     const fileName = 'assets/audio.webm';
     await stream.pipe(fs.createWriteStream(fileName));
     await voiceAnalysis.uploadWebmFile(recordingId);
   });
 });
+
