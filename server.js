@@ -159,11 +159,16 @@ server.listen(process.env.PORT || 3000, function onListen() {
 });
 
 const io = socket(server);
-io.configure('development', function() {
-  io.set('transports', ['xhr-polling']);
-});
+// const sockerServer = http.createServer((req, res) => {
+//   res.end();
+// });
 
-io.of('/audio').on('connection', function(socket) {
+// sockerServer.listen(8080);
+// const io = require('socket.io')(sockerServer);
+
+// io.set('transports', ['xhr-polling']);
+
+io.on('connection', function(socket) {
   ss(socket).on('send-audio', async (stream, data) => {
     let recordingId = data.recordingId;
     let recordingTitle = data.recordingTitle;
