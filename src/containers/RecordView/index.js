@@ -33,13 +33,11 @@ class RecordView extends Component {
     axios
       .get('/session')
       .then(res => {
-        // console.log('this is the recordView', res.data);
         if (res.data.id) {
           this.setState({
             user_id: res.data.id
           });
         }
-        // console.log('@@@@@@', this.state.user_id);
       })
       .catch(err => {
         console.log(err);
@@ -47,7 +45,7 @@ class RecordView extends Component {
   }
 
   sendAudio(recording, title) {
-    let socket = io.connect('/audio');
+    let socket = io();
     let file = recording.blob;
     let stream = ss.createStream();
 
@@ -86,7 +84,7 @@ class RecordView extends Component {
   onStop = recording => {
     const { saveRecording } = this.state;
     const { actions, history } = this.props;
-    
+
     if (saveRecording) {
       let title = prompt('Please enter a recording title:');
       history.push('/recordings');
