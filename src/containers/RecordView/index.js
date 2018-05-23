@@ -15,6 +15,7 @@ import ss from 'socket.io-stream';
 
 /* actions */
 import * as audioActionCreators from 'core/actions/actions-audio';
+import { NPN_ENABLED } from 'constants';
 
 class RecordView extends Component {
   constructor(props) {
@@ -45,7 +46,7 @@ class RecordView extends Component {
   }
 
   sendAudio(recording, title) {
-    let socket = io();
+    let socket = io.connect('https://www.spadey.net/audio');
     let file = recording.blob;
     let stream = ss.createStream();
 
