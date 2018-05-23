@@ -1,5 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const { User, Sequelize } = require('../database-pg');
 const {
@@ -45,24 +46,25 @@ passport.use(
   )
 );
 
-// passport.use(
-//   new FacebookStrategy(
-//     {
-//       callbackURL: '/auth/facebook/redirect',
-//       clientID: process.env.FACEBOOK_APP_ID,
-//       clientSecret: process.env.FACEBOOK_APP_SECRET
-//     },
-//     (accessToken, refreshToken, profile, cb) => {
-//       findOrCreateUserByFacebookId(profile.id, profile.displayName)
-//         .then(user => {
-//           done(null, user);
-//         })
-//         .catch(err => {
-//           done(err);
-//         });
-//     }
-//   )
-// );
+passport.use(
+  new FacebookStrategy(
+    {
+      callbackURL: '/auth/facebook/redirect',
+      clientID: process.env.FACEBOOK_APP_ID,
+      clientSecret: process.env.FACEBOOK_APP_SECRET
+    },
+    (accessToken, refreshToken, profile, done) => {
+      console.log(profile);
+      findOrCreateUserByFacebookId(profile.id, profile.name.givenName)
+        .then(user => {
+          done(null, user);
+        })
+        .catch(err => {
+          done(err);
+        });
+    }
+  )
+);
 
 passport.use(
   'local-login',

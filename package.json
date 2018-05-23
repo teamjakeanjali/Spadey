@@ -110,7 +110,8 @@
     "socket.io-stream": "^0.9.1",
     "sox-audio": "^0.3.0",
     "uuid": "^3.2.1",
-    "watson-developer-cloud": "^3.4.1"
+    "watson-developer-cloud": "^3.4.1",
+    "ws": "^5.2.0"
   },
   "config": {
     "ghooks": {

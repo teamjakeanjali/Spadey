@@ -41,6 +41,10 @@ const User = sequelize.define('users', {
   googleID: {
     type: Sequelize.STRING,
     unique: true
+  },
+  facebookID: {
+    type: Sequelize.STRING,
+    unique: true
   }
 });
 
