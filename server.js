@@ -1,4 +1,4 @@
-const https = require('https');
+const http = require('http');
 const express = require('express');
 const authRoutes = require('./routes/auth-routes');
 const passportSetup = require('./config/passport-setup');
@@ -150,7 +150,7 @@ app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '/src/index.html'));
 });
 
-const server = https.createServer(app);
+const server = http.createServer(app);
 
 server.listen(process.env.PORT || 3000, function onListen() {
   const address = server.address();
