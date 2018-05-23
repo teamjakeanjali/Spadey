@@ -56,7 +56,6 @@ class RecordingsView extends Component {
   };
 
   getAudioInfo = (userId, recordingId) => {
-    console.log('user', userId);
     axios
       .post('/messageinfo', {
         userId: userId,
@@ -84,7 +83,6 @@ class RecordingsView extends Component {
   };
 
   getRecordings() {
-    console.log(this.state.messages);
     const recordings = this.state.messages.map((recordedItem, index) => {
       return (
         <li key={`recording-${index}`}>
@@ -103,14 +101,12 @@ class RecordingsView extends Component {
   }
 
   displayRecordings() {
-    const { list } = this.props.audio;
-
-    if (this.state.messages && this.state.messages.length) {
-      const audioItems = this.getRecordings();
-      return <ul>{audioItems}</ul>;
-    } else {
-      return <EmptyState message="You don't have any recordings." />;
-    }
+    // if (this.state.messages && this.state.messages.length) {
+    const audioItems = this.getRecordings();
+    return <ul>{audioItems}</ul>;
+    // } else {
+    // return "You don't have any recordings.";
+    // }
   }
 
   render() {

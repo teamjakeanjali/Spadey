@@ -45,14 +45,12 @@ export class App extends Component {
       .get('/session')
       .then(res => {
         //THIS IS THE ENTIRE USER
-        console.log(res.data);
         if (res.data.id) {
           this.setState({
             isLoggedIn: true,
             userId: res.data.id
           });
         }
-        console.log('@@@', this.state.userId);
       })
       .catch(err => {
         console.log(err);
@@ -67,14 +65,12 @@ export class App extends Component {
         .get('/session')
         .then(res => {
           //THIS IS THE ENTIRE USER
-          console.log(res.data);
           if (res.data.id) {
             this.setState({
               isLoggedIn: true,
               userId: res.data.id
             });
           }
-          console.log('@@@', this.state.userId);
         })
         .catch(err => {
           console.log(err);
@@ -84,7 +80,6 @@ export class App extends Component {
 
   handleAuth = data => {
     data = JSON.parse(data);
-    console.log(data);
     if (data.username || data.email) {
       this.setState({
         isLoggedIn: true,
