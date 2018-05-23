@@ -159,6 +159,9 @@ server.listen(process.env.PORT || 3000, function onListen() {
 });
 
 const io = socket(server);
+io.configure('development', function() {
+  io.set('transports', ['xhr-polling']);
+});
 
 io.of('/audio').on('connection', function(socket) {
   ss(socket).on('send-audio', async (stream, data) => {
