@@ -53,7 +53,7 @@ router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
 router.get(
   '/facebook',
   passport.authenticate('facebook', {
-    scope: ['user_friends', 'manage_pages']
+    scope: ['email']
   })
 );
 
