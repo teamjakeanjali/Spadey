@@ -21,6 +21,7 @@ import RecordView from 'containers/RecordView';
 import RecordingsView from 'containers/RecordingsView';
 import DetailsView from 'containers/DetailsView';
 import ReportsView from 'containers/ReportsView';
+import AggregateView from 'containers/AggregateView';
 import Auth from '../Authentication/Auth';
 import Register from '../Authentication/Register';
 import Login from '../Authentication/Login';
@@ -110,6 +111,7 @@ export class App extends Component {
                     />
                     <Route path="/recording/:id" component={RecordingsView} />
                     <Route path="/reports/:id" component={RecordingsView} />
+                    <Route path="/overallanalysis" component={AggregateView} />
                     <Redirect from="/" to="/record" />
                   </Switch>
                 </div>

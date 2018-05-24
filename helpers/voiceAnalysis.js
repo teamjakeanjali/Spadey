@@ -8,7 +8,7 @@ require('dotenv').config();
 
 let globalRecordingId;
 
-const uploadWebmFile = recordingId => {
+const uploadWebmFile = async recordingId => {
   if (recordingId) {
     globalRecordingId = recordingId;
   }
@@ -28,7 +28,6 @@ const uploadWebmFile = recordingId => {
   };
 
   function callback(error, response) {
-    console.log(response.body);
     if (error) {
       console.log(error);
     } else {
@@ -53,6 +52,7 @@ const directUpload = id => {
     }
     getFlacFile(id);
   }
+
   fs.createReadStream('./assets/audio.webm').pipe(request(options, callback));
 };
 
