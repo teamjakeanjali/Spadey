@@ -190,4 +190,3 @@ io.on('connection', function(socket) {
     await voiceAnalysis.uploadWebmFile(recordingId);
   });
 });
-

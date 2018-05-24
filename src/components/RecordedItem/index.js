@@ -14,11 +14,9 @@ import { styles } from './styles.scss';
 
 export default function RecordedItem(props) {
   const { goToReports, goToRecording } = props;
-  // const { recordingTitle, blob } = props.item;
   const title = props.item.recordingTitle;
   const startTime = parseInt(props.item.recordingStartTime);
   const stopTime = parseInt(props.item.recordingStopTime);
-  console.log(startTime, stopTime);
   const createdAt = moment(startTime).format('MMMM DD YYYY, h:mm a');
   const totalSize = (parseInt(props.item.fileSize) / 1000000).toFixed(2);
   const length = (moment.duration(stopTime - startTime).asSeconds() / 60)
