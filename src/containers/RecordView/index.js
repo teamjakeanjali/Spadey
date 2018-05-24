@@ -50,8 +50,6 @@ class RecordView extends Component {
     let file = recording.blob;
     let stream = ss.createStream();
 
-    console.log(recording);
-
     ss(socket).emit('send-audio', stream, {
       mimetype: file.mimetype,
       size: file.size,
