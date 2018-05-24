@@ -175,7 +175,9 @@ io.on('connection', function(socket) {
       recordingStartTime,
       recordingStopTime,
       fileSize
-    );
+    ).then(() => {
+      socket.emit('inserted', true);
+    });
 
     const fileName = 'assets/audio.webm';
     await stream.pipe(fs.createWriteStream(fileName));
