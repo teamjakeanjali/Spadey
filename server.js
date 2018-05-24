@@ -155,7 +155,7 @@ const server = http.createServer(app);
 server.listen(process.env.PORT || 3000, function onListen() {
   const address = server.address();
   console.log('Listening on: %j', address);
-  console.log(' -> that probably means: https://localhost:%d', address.port);
+  console.log(' -> that probably means: http://localhost:%d', address.port);
 });
 
 const io = socket(server);
@@ -176,9 +176,6 @@ io.on('connection', function(socket) {
       recordingStopTime,
       fileSize
     );
-    // .then(() => {
-    //   socket.emit('inserted', true);
-    // });
 
     const fileName = 'assets/audio.webm';
     await stream.pipe(fs.createWriteStream(fileName));
