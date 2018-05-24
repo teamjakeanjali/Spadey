@@ -14,7 +14,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((user, done) => {
-  let id = JSON.parse(user.googleID);
+  let id = JSON.parse(user.googleID) || JSON.parse(user.facebookID);
   if (id) {
     findUserById(id)
       .then(user => {
