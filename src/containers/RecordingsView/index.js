@@ -22,6 +22,10 @@ class RecordingsView extends Component {
     };
   }
 
+  componentWillMount() {
+    this.getAllMessages();
+  }
+
   componentDidMount() {
     const { match, actions } = this.props;
 
@@ -101,12 +105,8 @@ class RecordingsView extends Component {
   }
 
   displayRecordings() {
-    // if (this.state.messages && this.state.messages.length) {
     const audioItems = this.getRecordings();
     return <ul>{audioItems}</ul>;
-    // } else {
-    // return "You don't have any recordings.";
-    // }
   }
 
   render() {

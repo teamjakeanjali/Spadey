@@ -35,7 +35,18 @@ class AggregateView extends Component {
   }
 
   render() {
-    return <LineChart data={this.state.data} />;
+    return (
+      <div>
+        <h2>Sentiment Analysis over Time</h2>
+        <br />
+        <LineChart
+          data={this.state.data}
+          xtitle="Time"
+          ytitle="Sentiment"
+          messages={{ empty: 'No data to render' }}
+        />
+      </div>
+    );
   }
 }
 

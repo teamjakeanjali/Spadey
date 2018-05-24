@@ -74,12 +74,14 @@ class ReportsView extends Component {
           dataObj[tone.tone_name] = 100 * tone.score;
         }
 
-        for (let sentenceTone of sentenceTones) {
-          if (sentenceTone.tones.length > 0) {
-            for (let tone in sentenceTone.tones) {
-              if (!Object.keys(dataObj).includes(tone.tone_name)) {
-                if (tone.tone_name) {
-                  dataObj[tone.tone_name] = 100 * tone.score;
+        if (sentenceTones) {
+          for (let sentenceTone of sentenceTones) {
+            if (sentenceTone.tones.length > 0) {
+              for (let tone in sentenceTone.tones) {
+                if (!Object.keys(dataObj).includes(tone.tone_name)) {
+                  if (tone.tone_name) {
+                    dataObj[tone.tone_name] = 100 * tone.score;
+                  }
                 }
               }
             }
@@ -101,7 +103,7 @@ class ReportsView extends Component {
             xtitle="Percentage"
             ytitle="Emotion"
             suffix="%"
-            colors={['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6']}
+            colors={['#b00', '#666']}
           />
         </div>
       );
@@ -114,7 +116,7 @@ class ReportsView extends Component {
     return (
       <div>
         <header>
-          <h1>Spadey Analysis Report</h1>
+          <h1>Daily Sentiment Analysis</h1>
           <IconButton className="btn close" onTouchTap={this.closeNav}>
             <NavigationBack />
           </IconButton>

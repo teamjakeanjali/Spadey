@@ -159,14 +159,6 @@ server.listen(process.env.PORT || 3000, function onListen() {
 });
 
 const io = socket(server);
-// const sockerServer = http.createServer((req, res) => {
-//   res.end();
-// });
-
-// sockerServer.listen(8080);
-// const io = require('socket.io')(sockerServer);
-
-// io.set('transports', ['xhr-polling']);
 
 io.on('connection', function(socket) {
   ss(socket).on('send-audio', async (stream, data) => {
@@ -175,16 +167,18 @@ io.on('connection', function(socket) {
     let recordingStartTime = data.recordingStartTime.toString();
     let recordingStopTime = data.recordingStopTime.toString();
     let fileSize = data.size.toString();
-    console.log('send audio error');
-    await insertMessageInfo(
+
+    insertMessageInfo(
       recordingId,
       globalUserId,
       recordingTitle,
       recordingStartTime,
       recordingStopTime,
       fileSize
-    );
-    console.log('insert message info?');
+    ).then(() => {
+      socket.emit('inserted', true);
+    });
+
     const fileName = 'assets/audio.webm';
     await stream.pipe(fs.createWriteStream(fileName));
     await voiceAnalysis.uploadWebmFile(recordingId);

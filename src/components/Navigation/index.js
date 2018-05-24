@@ -57,7 +57,7 @@ class Navigation extends Component {
           onChange={this.handleChange}
         >
           <Tab label="Record" value={'/record'} />
-          <Tab label="Sentiment" value={'/recordings'} />
+          <Tab label="Daily Sentiment" value={'/recordings'} />
         </Tabs>
       </div>
     );

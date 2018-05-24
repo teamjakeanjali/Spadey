@@ -5,6 +5,7 @@ import Button from 'components/Button';
 import MicrophoneIcon from 'material-ui/svg-icons/av/mic';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import SaveIcon from 'material-ui/svg-icons/content/save';
+import CircularProgress from 'material-ui/CircularProgress';
 import ReactSimpleTimer from 'react-simple-timer';
 import Microphone from 'components/Microphone';
 import { withRouter } from 'react-router-dom';
@@ -15,7 +16,6 @@ import ss from 'socket.io-stream';
 
 /* actions */
 import * as audioActionCreators from 'core/actions/actions-audio';
-import { NPN_ENABLED } from 'constants';
 
 class RecordView extends Component {
   constructor(props) {
@@ -23,10 +23,10 @@ class RecordView extends Component {
     this.state = {
       recording: false,
       saveRecording: false,
-      transcription: '',
-      overallTone: '',
       audio: '',
-      user_id: ''
+      user_id: '',
+      inserted: false,
+      uploaded: false
     };
   }
 
@@ -59,6 +59,15 @@ class RecordView extends Component {
       recordingStopTime: recording.stopTime
     });
     ss.createBlobReadStream(file).pipe(stream);
+
+    socket.on('inserted', data => {
+      if (data === true) {
+        this.setState({
+          inserted: true
+        });
+        console.log(data);
+      }
+    });
   }
 
   startRecording = () => {
@@ -86,16 +95,20 @@ class RecordView extends Component {
 
     if (saveRecording) {
       let title = prompt('Please enter a recording title:');
-      history.push('/recordings');
       actions.audio.saveRecording(recording);
       this.sendAudio(recording, title);
+    }
+
+    if (this.state.inserted === true) {
+      history.push('/recordings');
     }
   };
 
   render() {
     let buttons;
-    const { recording } = this.state;
+    let body;
 
+    const { inserted, recording, saveRecording } = this.state;
     if (recording) {
       buttons = (
         <div className="buttons">
@@ -133,8 +146,19 @@ class RecordView extends Component {
       );
     }
 
+    if (saveRecording === true && inserted === false) {
+      body = (
+        <div>
+          <CircularProgress size={80} thickness={7} color="blue" />
+        </div>
+      );
+    } else {
+      body = <div />;
+    }
+
     return (
       <div className={styles}>
+        <div>{body}</div>
         <Microphone record={recording} onStop={this.onStop} />
         <div id="controls">
           <ReactSimpleTimer play={recording} />
