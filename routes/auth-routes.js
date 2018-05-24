@@ -59,10 +59,10 @@ router.get(
 
 router.get(
   '/facebook/redirect',
-  passport.authenticate('facebook'),
-  (req, res) => {
-    res.redirect('/#/record');
-  }
+  passport.authenticate('facebook', {
+    successRedirect: '/#/record',
+    failureRedirect: '/auth/login'
+  })
 );
 
 module.exports = router;
