@@ -50,19 +50,19 @@ router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
   res.redirect('/#/record');
 });
 
-// router.get(
-//   '/facebook',
-//   passport.authenticate('facebook', {
-//     scope: ['email']
-//   })
-// );
+router.get(
+  '/facebook',
+  passport.authenticate('facebook', {
+    scope: ['email']
+  })
+);
 
-// router.get(
-//   '/facebook/redirect',
-//   passport.authenticate('facebook'),
-//   (req, res) => {
-//     res.redirect('/#/record');
-//   }
-// );
+router.get(
+  '/facebook/redirect',
+  passport.authenticate('facebook'),
+  (req, res) => {
+    res.redirect('/#/record');
+  }
+);
 
 module.exports = router;
