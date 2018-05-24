@@ -34,7 +34,9 @@ class LeftNavBar extends Component {
               <span />Logout
             </a>
           </div>
-          <Link to="/overallanalysis">Overall Analysis</Link>
+          <div className="analysis">
+            <Link to="/overallanalysis">Overall Analysis</Link>
+          </div>
         </Drawer>
       </div>
     );
