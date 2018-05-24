@@ -49,6 +49,7 @@ class RecordView extends Component {
     let socket = io({ transports: ['websocket'] });
     let file = recording.blob;
     let stream = ss.createStream();
+    const { history } = this.props;
 
     ss(socket).emit('send-audio', stream, {
       mimetype: file.mimetype,
@@ -62,10 +63,14 @@ class RecordView extends Component {
 
     socket.on('inserted', data => {
       if (data === true) {
-        this.setState({
-          inserted: true
-        });
-        console.log(data);
+        this.setState(
+          {
+            inserted: true
+          },
+          () => {
+            history.push('/recordings');
+          }
+        );
       }
     });
   }
@@ -99,9 +104,9 @@ class RecordView extends Component {
       this.sendAudio(recording, title);
     }
 
-    if (this.state.inserted === true) {
-      history.push('/recordings');
-    }
+    // if (this.state.inserted === true) {
+    //   history.push('/recordings');
+    // }
   };
 
   render() {
