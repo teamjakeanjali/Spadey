@@ -14,7 +14,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((user, done) => {
-  let id = JSON.parse(user.googleID) || JSON.parse(user.facebookID);
+  let id = JSON.parse(user.googleID);
   if (id) {
     findUserById(id)
       .then(user => {
@@ -47,25 +47,25 @@ passport.use(
   )
 );
 
-passport.use(
-  new FacebookStrategy(
-    {
-      callbackURL: '/auth/facebook/redirect',
-      clientID: process.env.FACEBOOK_APP_ID,
-      clientSecret: process.env.FACEBOOK_APP_SECRET
-    },
-    (accessToken, refreshToken, profile, done) => {
-      console.log(profile);
-      findOrCreateUserByFacebookId(profile.id, profile.name.givenName)
-        .then(user => {
-          done(null, user);
-        })
-        .catch(err => {
-          done(err);
-        });
-    }
-  )
-);
+// passport.use(
+//   new FacebookStrategy(
+//     {
+//       callbackURL: '/auth/facebook/redirect',
+//       clientID: process.env.FACEBOOK_APP_ID,
+//       clientSecret: process.env.FACEBOOK_APP_SECRET
+//     },
+//     (accessToken, refreshToken, profile, done) => {
+//       console.log(profile);
+//       findOrCreateUserByFacebookId(profile.id, profile.name.givenName)
+//         .then(user => {
+//           done(null, user);
+//         })
+//         .catch(err => {
+//           done(err);
+//         });
+//     }
+//   )
+// );
 
 passport.use(
   'local-login',
