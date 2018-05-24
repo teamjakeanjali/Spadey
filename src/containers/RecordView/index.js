@@ -61,18 +61,18 @@ class RecordView extends Component {
     });
     ss.createBlobReadStream(file).pipe(stream);
 
-    socket.on('inserted', data => {
-      if (data === true) {
-        this.setState(
-          {
-            inserted: true
-          },
-          () => {
-            history.push('/recordings');
-          }
-        );
-      }
-    });
+    // socket.on('inserted', data => {
+    //   if (data === true) {
+    //     this.setState(
+    //       {
+    //         inserted: true
+    //       },
+    //       () => {
+    //         history.push('/recordings');
+    //       }
+    //     );
+    //   }
+    // });
   }
 
   startRecording = () => {
@@ -102,6 +102,7 @@ class RecordView extends Component {
       let title = prompt('Please enter a recording title:');
       actions.audio.saveRecording(recording);
       this.sendAudio(recording, title);
+      history.push('/recordings');
     }
 
     // if (this.state.inserted === true) {
@@ -151,19 +152,19 @@ class RecordView extends Component {
       );
     }
 
-    if (saveRecording === true && inserted === false) {
-      body = (
-        <div>
-          <CircularProgress size={80} thickness={7} color="blue" />
-        </div>
-      );
-    } else {
-      body = <div />;
-    }
+    // if (saveRecording === true && inserted === false) {
+    //   body = (
+    //     <div>
+    //       <CircularProgress size={80} thickness={7} color="blue" />
+    //     </div>
+    //   );
+    // } else {
+    //   body = <div />;
+    // }
 
     return (
       <div className={styles}>
-        <div>{body}</div>
+        {/* <div>{body}</div> */}
         <Microphone record={recording} onStop={this.onStop} />
         <div id="controls">
           <ReactSimpleTimer play={recording} />
