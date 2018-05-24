@@ -5,7 +5,8 @@ const LocalStrategy = require('passport-local').Strategy;
 const { User, Sequelize } = require('../database-pg');
 const {
   findUserById,
-  findOrCreateUserByGoogleId
+  findOrCreateUserByGoogleId,
+  comparePassword
 } = require('../database-pg/helper');
 
 passport.serializeUser((user, done) => {
@@ -74,12 +75,14 @@ passport.use(
       where: {
         [Op.or]: [{ username: usernameOrEmail }, { email: usernameOrEmail }]
       }
-    })
-      .then(user => {
-        done(null, user);
-      })
-      .catch(err => {
-        done(err);
-      });
+    }).then(user => {
+      comparePassword(password, user.password)
+        .then(() => {
+          done(null, user);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    });
   })
 );

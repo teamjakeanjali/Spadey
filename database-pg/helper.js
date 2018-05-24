@@ -186,5 +186,6 @@ module.exports = {
   insertMessageInfo,
   getMessageInfo,
   updateMessage,
-  getAllMessages
+  getAllMessages,
+  comparePassword
 };
