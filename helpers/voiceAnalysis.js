@@ -120,9 +120,7 @@ const analyzeSpeech = () => {
     audio: audio
   };
 
-  console.log('FILE', audio.content);
-
-  // // Detects speech in the audio file
+  // Detects speech in the audio file
   client
     .recognize(speechRequest)
     .then(data => {
