@@ -65,7 +65,9 @@ class ReportsView extends Component {
     let dataObj = {};
     let data = [];
 
-    if (audioBlob) {
+    if (!this.props.audio.sentiment) {
+      body = <div>No sentiment found in recording.</div>;
+    } else {
       if (this.props.audio.sentiment.document_tone) {
         sentimentTones = this.props.audio.sentiment.document_tone.tones;
         sentenceTones = this.props.audio.sentiment.sentences_tone;
@@ -107,10 +109,6 @@ class ReportsView extends Component {
           />
         </div>
       );
-    } else if (!this.props.audio.sentiment) {
-      body = <div>No sentiment found in recording.</div>;
-    } else {
-      body = <div>No recording was found</div>;
     }
 
     return (
