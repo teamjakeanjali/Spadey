@@ -103,7 +103,7 @@ class ReportsView extends Component {
             xtitle="Percentage"
             ytitle="Emotion"
             suffix="%"
-            colors={['#b00', '#666']}
+            colors={['#7ae266']}
           />
         </div>
       );

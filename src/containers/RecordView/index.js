@@ -26,7 +26,8 @@ class RecordView extends Component {
       audio: '',
       user_id: '',
       inserted: false,
-      uploaded: false
+      uploaded: false,
+      username: ''
     };
   }
 
@@ -36,7 +37,8 @@ class RecordView extends Component {
       .then(res => {
         if (res.data.id) {
           this.setState({
-            user_id: res.data.id
+            user_id: res.data.id,
+            username: res.data.username
           });
         }
       })
@@ -61,18 +63,18 @@ class RecordView extends Component {
     });
     ss.createBlobReadStream(file).pipe(stream);
 
-    // socket.on('inserted', data => {
-    //   if (data === true) {
-    //     this.setState(
-    //       {
-    //         inserted: true
-    //       },
-    //       () => {
-    //         history.push('/recordings');
-    //       }
-    //     );
-    //   }
-    // });
+    socket.on('inserted', data => {
+      if (data === true) {
+        this.setState(
+          {
+            inserted: true
+          },
+          () => {
+            history.push('/recordings');
+          }
+        );
+      }
+    });
   }
 
   startRecording = () => {
@@ -102,12 +104,12 @@ class RecordView extends Component {
       let title = prompt('Please enter a recording title:');
       actions.audio.saveRecording(recording);
       this.sendAudio(recording, title);
-      history.push('/recordings');
+      // history.push('/recordings');
     }
 
-    // if (this.state.inserted === true) {
-    //   history.push('/recordings');
-    // }
+    if (this.state.inserted === true) {
+      history.push('/recordings');
+    }
   };
 
   render() {
@@ -152,19 +154,25 @@ class RecordView extends Component {
       );
     }
 
-    // if (saveRecording === true && inserted === false) {
-    //   body = (
-    //     <div>
-    //       <CircularProgress size={80} thickness={7} color="blue" />
-    //     </div>
-    //   );
-    // } else {
-    //   body = <div />;
-    // }
+    if (saveRecording === true && inserted === false) {
+      body = (
+        <div>
+          <CircularProgress size={80} thickness={7} color="blue" />
+        </div>
+      );
+    } else {
+      body = (
+        <div>
+          Welcome to Spadey, {this.state.username}! <br /> This app is a voice
+          journal that helps you track your emotions. We hope this can
+          positively impact your life.
+        </div>
+      );
+    }
 
     return (
       <div className={styles}>
-        {/* // <div>{body}</div> */}
+        <div>{body}</div>
         <Microphone record={recording} onStop={this.onStop} />
         <div id="controls">
           <ReactSimpleTimer play={recording} />
