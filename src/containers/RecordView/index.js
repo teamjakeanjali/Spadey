@@ -61,20 +61,34 @@ class RecordView extends Component {
       recordingStartTime: recording.startTime,
       recordingStopTime: recording.stopTime
     });
-    ss.createBlobReadStream(file).pipe(stream);
+    ss.createBlobReadStream(file, { highWaterMark: 16 * 1024 }).pipe(stream);
 
-    socket.on('inserted', data => {
-      if (data === true) {
-        this.setState(
-          {
-            inserted: true
-          },
-          () => {
-            history.push('/recordings');
-          }
-        );
-      }
-    });
+    // socket.on('updated', data => {
+    //   console.log('updated', data);
+    // });
+
+    // socket.on('inserted', data => {
+    //   if (data === true) {
+    //     this.setState(
+    //       {
+    //         inserted: true
+    //       },
+    //       () => {
+    //         history.push('/recordings');
+    //       }
+    //     );
+    //   }
+    // });
+    setTimeout(() => {
+      this.setState(
+        {
+          inserted: true
+        },
+        () => {
+          history.push('/recordings');
+        }
+      );
+    }, 7000);
   }
 
   startRecording = () => {

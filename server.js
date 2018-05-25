@@ -15,7 +15,7 @@ const { Message } = require('./database-pg/index');
 const bodyParser = require('body-parser');
 const app = express();
 const isDevMode = process.env.NODE_ENV === 'development';
-const voiceAnalysis = require('./helpers/voiceAnalysis.js');
+const { uploadWebmFile } = require('./helpers/voiceAnalysis.js');
 const socket = require('socket.io');
 const ss = require('socket.io-stream');
 const fs = require('fs');
@@ -175,12 +175,18 @@ io.on('connection', function(socket) {
       recordingStartTime,
       recordingStopTime,
       fileSize
-    ).then(() => {
-      socket.emit('inserted', true);
-    });
+    );
+    /*     // .then(() => {
+    //   socket.emit('inserted', true);
+    // });
+
+    // console.log('UPDATED', updated);
+    // if (updated === true) {
+    //   socket.emit('updated', true);
+    // } */
 
     const fileName = 'assets/audio.webm';
     await stream.pipe(fs.createWriteStream(fileName));
-    await voiceAnalysis.uploadWebmFile(recordingId);
+    await uploadWebmFile(recordingId);
   });
 });
